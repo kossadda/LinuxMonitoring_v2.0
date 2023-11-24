@@ -1,27 +1,22 @@
 #!/bin/bash
 
-date=$(date "+%d%m%y")
-
-CHAR=$1
-
-symbols() {
+ordinary_symbols() {
     for ((i = 0; i < ${#chars}; i++)); do
         char="${chars:$i:1}"
-        if [[ ! "$sym" == *"$char"* ]]; then
-            local sym="${sym}${char}"
+        if [[ ! "$symbols" == *"$char"* ]]; then
+            local symbols="${symbols}${char}"
         fi
     done
-    echo "$sym"
+    echo "$symbols"
 }
 
 add_symbol() {
-    local chars=$CHAR
-    local sym=$(symbols "$chars")
-    local index=$((RANDOM % ${#sym}))
-    local insert="${sym:index:1}"
+    local symbols=$(ordinary_symbols "$chars")
+    local index=$((RANDOM % ${#symbols}))
+    local insert="${symbols:index:1}"
     local inserted=false
-    for ((i = 0; i < ${#sym}; i++)); do
-        char="${sym:$i:1}"
+    for ((i = 0; i < ${#symbols}; i++)); do
+        char="${symbols:$i:1}"
         local res="${res}${char}"
         if [ "$char" == "$insert" ] && [ "$inserted" == false ]; then
             res="${res}${insert}"
@@ -31,15 +26,38 @@ add_symbol() {
     echo "$res"
 }
 
-folder_name() {
-    # local index=$((RANDOM % ${#sym}))
-    local chars=$CHAR
-    local name=$(symbols "$chars")
+name_generation() {
+    local name=$(ordinary_symbols "$chars")
     while [ ${#name} -lt $((RANDOM % (8 - 4) + 4)) ]; do
-        name=$(add_symbol "$sym")
-        sym=$name
+        name=$(add_symbol "$symbols")
+        symbols=$name
     done
     echo "${name}_$date"
 }
 
-echo "$(folder_name)"
+
+filename_generation() {
+    local filename=""
+    for ((i = 0; i < ${#chars}; i++)); do
+        char="${chars:$i:1}"
+        if [ "$char" == "." ]; then
+            chars=$filename
+            filename="$(name_generation $filename)"
+            chars=$FCHAR
+        fi
+        filename="${filename}${char}"
+    done
+    echo "$filename"
+}
+
+use_foldername() {
+    chars="$CHAR"
+    folder_name="$(name_generation $chars)"
+    echo "$folder_name"
+}
+
+use_filename() {
+    chars="$FCHAR"
+    file_name="$(filename_generation $chars)"
+    echo "$file_name"
+}

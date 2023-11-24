@@ -1,5 +1,7 @@
 #!/bin/bash
 
+date=$(date "+%d%m%y")
+
 PATH=$1
 NEST=$2
 CHAR=$3
@@ -8,16 +10,40 @@ FCHAR=$5
 SIZE=$6
 
 source ./valid.sh
-if [ $(valid) -eq 1 ]; then
-    echo "Govno"
+source ./folders.sh
+
+validation $@
+if [ $? -eq 0 ]; then
+    echo "$(use_filename)"
+    echo "$(use_foldername)"
 fi
 
-# # Используем значения, переданные через аргументы командной строки
-# input="$1"
-# len="$2"
 
-# # Вызываем функцию
-# test=$(random_str "$input" "$len")
 
-# # Выводим результат
-# echo "Random string: $test"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# if [ "$free_space" -lt 1000000 ]; then
+#     echo "Not enough free space on the filesystem. Exiting..."
+#     exit 1
+# fi
