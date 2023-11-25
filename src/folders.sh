@@ -43,7 +43,7 @@ filename_generation() {
         if [ "$char" == "." ]; then
             chars=$filename
             filename="$(name_generation $filename)"
-            chars=$FCHAR
+            chars=$file_chars
         fi
         filename="${filename}${char}"
     done
@@ -51,13 +51,13 @@ filename_generation() {
 }
 
 use_foldername() {
-    chars="$CHAR"
+    chars="$folder_chars"
     folder_name="$(name_generation $chars)"
     echo "$folder_name"
 }
 
 use_filename() {
-    chars="$FCHAR"
+    chars="$file_chars"
     file_name="$(filename_generation $chars)"
     echo "$file_name"
 }
