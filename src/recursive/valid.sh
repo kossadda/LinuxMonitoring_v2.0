@@ -21,16 +21,16 @@ validation() {
                 code=1
             fi
         fi
-        if ! [[ "$2" =~ ^[0-9]+$ ]] || [ $2 -gt 1000 ]; then
-            echo "Parameter 2: number of subfolders - integer, range [0-1000]  |  example: 5"
+        if ! [[ "$2" =~ ^[0-9]+$ ]] || [ $2 -gt 10 ]; then
+            echo "Parameter 2: number of subfolders - integer, range [0-10]  |  example: 5"
             code=1
         fi
         if ! [[ "$3" =~ ^[a-zA-Z]{1,7}$ ]]; then
             echo "Parameter 3: letters in folder names - string, length [1-7]  |  example: abc)"
             code=1
         fi
-        if ! [[ "$4" =~ ^[0-9]+$ ]] || [ $4 -gt 1000 ]; then
-            echo "Parameter 4: number of files in each folder - integer, range [0-1000]  |  example: 3"
+        if ! [[ "$4" =~ ^[0-9]+$ ]] || [ $4 -gt 10 ]; then
+            echo "Parameter 4: number of files in each folder - integer, range [0-10]  |  example: 3"
             code=1
         fi
         if ! [[ "$5" =~ ^[a-zA-Z]{1,7}\.[a-zA-Z]{1,3}$ ]]; then
