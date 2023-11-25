@@ -24,6 +24,5 @@ source ./creating.sh
 validation $@
 if [ $? -eq 0 ]; then
     cd "$target_path"
-    full_itteraion=$nested_folders
-    create_folders "$nested_folders" "$file_size" "$files_per_folder" "$folder_chars" "$file_chars" "$full_itteraion"
+    create_folders "$nested_folders" "$file_size" "$files_per_folder" "$folder_chars" "$file_chars"
 fi

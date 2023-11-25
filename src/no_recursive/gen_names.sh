@@ -28,7 +28,7 @@ add_symbol() {
 
 name_generation() {
     local name=$(ordinary_symbols "$chars")
-    while [ ${#name} -lt $((RANDOM % (8 - 4) + 4)) ]; do
+    while [ ${#name} -lt $((RANDOM % (50 - 4) + 4)) ]; do
         name=$(add_symbol "$symbols")
         symbols=$name
     done

@@ -7,7 +7,7 @@ date=$(date "+%d%m%y")
 if [ ${#6} -ge 3 ]; then
     trimmed_size="${6::-2}"
 else
-    trimmed_size="$6"
+    trimmed_size=101
 fi
 
 target_path=$1
