@@ -1,4 +1,5 @@
 #!/bin/bash
+
 validation() {
     code=0
     if [ $# -lt 1 ] || [ $# -gt 6 ]; then
@@ -36,7 +37,7 @@ validation() {
             echo "Parameter 5: letters in file names - string, filename length [1-7], file format length [1-3]  |  example: abc.xz"
             code=1
         fi
-        if ! [[ "$6" =~ ^[0-9]+$ ]] || [ $6 -gt 100 ]; then
+        if ! [[ "$6" =~ ^[0-9]+kb$ ]] || [ $(${6::-2}) -gt 100 ]; then
             echo "Parameter 6: file size in kilobytes - integer, range [0-100]  |  example: 15kb"
             code=1
         fi
