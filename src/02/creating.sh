@@ -1,41 +1,50 @@
 #!/bin/bash
 
+date=$(date "+%d%m%y")
+
+name=$((RANDOM % 1000))
 create_folders() {
-    local nested_folders=$1
-    local file_size=$2
-    local files_per_folder=$3
-    local folder_chars=$4
-    local file_chars=$5
-    local full_itteraion=$6
-    free_space=$(df / | tail -n +2 | awk '{printf("%d", $4)}')
-
-    if [ $nested_folders -le 0 ]; then
-        return
-    elif [ $free_space -le 1000000 ]; then
-        echo "Not enough free space on the filesystem. Exiting..."
-        exit 1
-    fi
-
-    for i in $(seq 1 "$full_itteraion"); do
-        folder_name=$(use_foldername "$folder_chars")
-        while [ -d "$folder_name" ]; do
-            folder_name=$(use_foldername "$folder_chars")
-        done
-        mkdir "$folder_name"
-        echo "Date $date_for_report created folder: $(pwd)$folder_name" >> $log_file
-        cd "$folder_name"
-
-        for ((j=1; j<=files_per_folder; j++)); do
-            file_name=$(use_filename "$file_chars")
-            while [ -e $file_name ]; do
-                file_name=$(use_filename "$file_chars")
-            done
-            dd if=/dev/zero of="$file_name" bs=1024 count="$file_size"
-            echo "Date $date_for_report created ${file_size}kb sized file: $(pwd)$file_name" >> $log_file
-        done
-
-        create_folders "$((nested_folders - 1))" "$file_size" "$files_per_folder" "$folder_chars" "$file_chars" "$full_itteraion"
-
-        cd ..
+    nest_num=$((RANDOM % (100 - 10) + 10))
+    for ((i=0; i < $nest_num; i++)); do
+        names="$((RANDOM % 1000))${name}_$date"
+        mkdir $names
     done
 }
+
+all() {
+    create_folders
+    all_nest_num=$((RANDOM % (100 - 10) + 10))
+    for ((i=0; i < $all_nest_num; i++)); do
+        for folder in $(find . -maxdepth 1 -type d -name "*$date*"); do
+            cd "$(basename "$folder")"
+            ordinary_create "$(pwd)"
+            cd ..
+        done
+    done
+}
+
+ordinary_create() {
+    root=$1
+    folder_num=$((RANDOM % (100 - 10) + 10))
+    for((j=0; j < $folder_num; j++)); do
+        mini_ordinary=$((RANDOM % 10))
+        for((k=0; k < $mini_ordinary; k++)); do
+            names="$((RANDOM % 1000))${name}_$date"
+            mkdir $names
+            # сюда присобачить создание файлов
+        done
+        rand=$((RANDOM % 10))
+        if [ $rand -eq 0 ]; then
+            continue
+        fi
+        names="$((RANDOM % 1000))${name}_$date"
+        mkdir $names
+        # сюда присобачить создание файлов
+        cd $names
+    done
+    cd $root
+}
+
+
+cd test
+all
