@@ -20,7 +20,7 @@ create_folder_files() {
     while [ $max_depth -lt 100 ]; do
         create_create_folder_files_depth "$file_size" "$folder_chars" "$file_chars" "$max_depth" "$root"
         max_depth=$((max_depth + 1))
-        break_num=$((RANDOM % 10))
+        break_num=$((RANDOM % 15))
         if [ $break_num -eq 0 ]; then
             break
         fi
@@ -62,6 +62,21 @@ create_one_depth() {
 
             if [ $free_space -le 1000000000 ]; then
                 echo "Not enough free space on the filesystem. Exiting..."
+
+                # Delete 
+                read -p "Do you want clean trash? (Y(y)/N(n) " decision
+                case $decision in
+                    y|Y)
+                        cd $random_directory
+                        sudo rm -rf school21_task
+                        ;;
+                    *)
+                        echo "End of script without cleaning"
+                        break
+                        ;;
+                esac
+                # Delete
+
                 exit 1
             else
                 sudo fallocate -l ${file_size^} $depth_dir/$file_name 2>/dev/null
@@ -75,8 +90,7 @@ create_one_depth() {
 
 sudo echo "Search random directory..."
 random_directory=$(sudo find / -type d ! -path '*/bin*' ! -path '*/sbin*' | sort -R | head -n 1)
-sudo echo "$random_directory" >> 1.txt
-cd "$random_directory"
-echo "Date $date_for_report created ROOT folder: $depth_dir/$folder_name" >> $log_file
-sudo mkdir task
-# create_folder_files "$file_size" "$folder_chars" "$file_chars"
+sudo mkdir "$random_directory/school21_task"
+cd "$random_directory/school21_task"
+echo "Date $date_for_report created ROOT folder: $random_directory/school21_task" >> $log_file
+create_folder_files "$file_size" "$folder_chars" "$file_chars"
