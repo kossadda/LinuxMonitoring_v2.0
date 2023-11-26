@@ -1,4 +1,4 @@
-#!/bin/bash
+# #!/bin/bash
 
 create_folder_files() {
     local folder_chars=$1
@@ -28,12 +28,36 @@ create_depth() {
     done
 }
 
+create_files_in_folder() {
+    local folder_chars=$1
+    local file_chars=$2
+    local file_size=$3
+    local depth_dir=$4
+    local num_files=$((RANDOM % (5 - 1) + 1))
+
+    for ((j=0; j<=num_files; j++)); do
+        file_name=$(use_filename "$file_chars")
+        while [ -e $file_name ]; do
+            file_name=$(use_filename "$file_chars")
+        done
+        free_space=$(df / | tail -n +2 | awk '{printf("%d", $4 * 1024)}')
+        if [ $free_space -le 1000000000 ]; then
+            echo "Not enough free space on the filesystem. Exiting..."
+            exit 1
+        else
+            sudo fallocate -l ${file_size^} $depth_dir/$file_name 2>/dev/null
+        fi
+        echo "Date $date_for_report created $(($file_size / 1024 / 1024))Mb sized file: $depth_dir/$file_name" >> $log_file
+    done
+}
+
 create_one_depth() {
     local folder_chars=$1
     local file_chars=$2
     local file_size="$(($3 * 1024 *1024))"
     local depth_dir=$4
     nest_num=$((RANDOM % (7 - 1) + 1))
+
     for ((i=0; i < $nest_num; i++)); do
         local folder_name=$(use_foldername "$folder_chars")
         while [ -d "$depth_dir/$folder_name" ]; do
@@ -42,23 +66,7 @@ create_one_depth() {
         sudo mkdir "$depth_dir/$folder_name"
         echo "Date $date_for_report created folder: $depth_dir/$folder_name" >> $log_file
 
-        local num_files=$((RANDOM % (5 - 1) + 1))
-        for ((j=0; j<=num_files; j++)); do
-            file_name=$(use_filename "$file_chars")
-            while [ -e $file_name ]; do
-                file_name=$(use_filename "$file_chars")
-            done
-            free_space=$(df / | tail -n +2 | awk '{printf("%d", $4 * 1024)}')
-
-            if [ $free_space -le 1000000000 ]; then
-                echo "Not enough free space on the filesystem. Exiting..."
-                exit 1
-            else
-                sudo fallocate -l ${file_size^} $depth_dir/$file_name 2>/dev/null
-            fi
-
-            echo "Date $date_for_report created $(($file_size / 1024 / 1024))Mb sized file: /$depth_dir/$file_name" >> $log_file
-        done
-
+        # Вызываем функцию для создания файлов в папке
+        create_files_in_folder "$folder_chars" "$file_chars" "$file_size" "$depth_dir/$folder_name"
     done
 }

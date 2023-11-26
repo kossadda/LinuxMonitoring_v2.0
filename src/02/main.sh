@@ -22,7 +22,8 @@ validation $@
 
 if [ $? -eq 0 ]; then
     sudo echo "Search random directory..."
-    random_directory=$(sudo find / -type d ! -path '*/bin*' ! -path '*/sbin*' | sort -R | head -n 1)
+    random_directory=$(find / -type d -readable -executable -not \( -name "*bin*" -o -name "*sbin*" \) -print 2>/dev/null | shuf -n 1)
+    cd "$random_directory"
     echo "Date $date_for_report created ROOT folder: $random_directory/school21_task" >> $log_file
     create_folder_files "$folder_chars" "$file_chars" "$file_size"
 fi
