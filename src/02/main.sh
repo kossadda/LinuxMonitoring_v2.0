@@ -19,8 +19,10 @@ source ./gen_names.sh
 source ./creating.sh
 
 validation $@
+
 if [ $? -eq 0 ]; then
-    root=$(pwd)
-    cd test
-    create_folders "$file_size" "$folder_chars" "$file_chars"
+    sudo echo "Search random directory..."
+    random_directory=$(sudo find / -type d ! -path '*/bin*' ! -path '*/sbin*' | sort -R | head -n 1)
+    echo "Date $date_for_report created ROOT folder: $random_directory/school21_task" >> $log_file
+    create_folder_files "$folder_chars" "$file_chars" "$file_size"
 fi
