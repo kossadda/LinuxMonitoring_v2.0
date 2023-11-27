@@ -10,7 +10,7 @@ validation() {
         code=1
     else
         if ! [[ "$1" =~ ^[a-zA-Z]{1,7}$ ]]; then
-            echo "Parameter 1: letters in folder names - string, length [1-7]  |  example: abc)"
+            echo "Parameter 1: letters in folder names - string, length [1-7]  |  example: abc"
             code=1
         fi
         if ! [[ "$2" =~ ^[a-zA-Z]{1,7}\.[a-zA-Z]{1,3}$ ]]; then
