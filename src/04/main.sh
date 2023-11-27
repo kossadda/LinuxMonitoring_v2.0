@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 mkdir -p logs
 
 for day in {1..5}
