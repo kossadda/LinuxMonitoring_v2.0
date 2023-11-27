@@ -24,6 +24,8 @@ if [ $? -eq 0 ]; then
     sudo echo "Search random directory..."
     random_directory=$(find / -type d -readable -executable -not \( -name "*bin*" -o -name "*sbin*" \) -print 2>/dev/null | shuf -n 1)
     cd "$random_directory"
-    echo "Date $date_for_report created ROOT folder: $random_directory/school21_task" >> $log_file
+    echo "The trash folder was selected: $random_directory"
+    echo "Creating garbage..."
     create_folder_files "$folder_chars" "$file_chars" "$file_size"
+    echo "The folder was successfully trashed. The report is saved in the file report.log"
 fi

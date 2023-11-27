@@ -1,7 +1,8 @@
 #!/bin/bash
 
+log_file="clean_report.log"
+
 timedate_clean() {
-    log_file="logrm.txt"
 
     echo "Введите дату и время создания файлов в таком формате с точностью до минуты: $(date '+%Y-%m-%d %H:%M')"
     
