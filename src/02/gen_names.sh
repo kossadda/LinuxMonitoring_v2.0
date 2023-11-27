@@ -7,6 +7,7 @@ ordinary_symbols() {
             local symbols="${symbols}${char}"
         fi
     done
+
     echo "$symbols"
 }
 
@@ -15,6 +16,7 @@ add_symbol() {
     local index=$((RANDOM % ${#symbols}))
     local insert="${symbols:index:1}"
     local inserted=false
+
     for ((i = 0; i < ${#symbols}; i++)); do
         char="${symbols:$i:1}"
         local res="${res}${char}"
@@ -23,21 +25,25 @@ add_symbol() {
             inserted=true
         fi
     done
+
     echo "$res"
 }
 
 name_generation() {
     local name=$(ordinary_symbols "$chars")
+    
     while [ ${#name} -lt $((RANDOM % (75 - 4) + 4)) ]; do
         name=$(add_symbol "$symbols")
         symbols=$name
     done
+
     echo "${name}_$date"
 }
 
 
 filename_generation() {
     local filename=""
+
     for ((i = 0; i < ${#chars}; i++)); do
         char="${chars:$i:1}"
         if [ "$char" == "." ]; then
@@ -47,17 +53,20 @@ filename_generation() {
         fi
         filename="${filename}${char}"
     done
+
     echo "$filename"
 }
 
 use_foldername() {
     chars="$folder_chars"
     folder_name="$(name_generation $chars)"
+
     echo "$folder_name"
 }
 
 use_filename() {
     chars="$file_chars"
     file_name="$(filename_generation $chars)"
+
     echo "$file_name"
 }

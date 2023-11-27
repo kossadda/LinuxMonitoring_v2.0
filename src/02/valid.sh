@@ -2,6 +2,7 @@
 
 validation() {
     code=0
+    
     if [ $# -lt 1 ] || [ $# -gt 3 ]; then
         echo "Enter 3 parameters:"
         echo "1) Letters in folder names"
@@ -22,5 +23,6 @@ validation() {
             code=1
         fi
     fi
+
     return $code
 }

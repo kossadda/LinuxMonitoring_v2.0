@@ -7,13 +7,9 @@ create_folders() {
     local folder_chars=$4
     local file_chars=$5
     local full_itteraion=$6
-    free_space=$(df / | tail -n +2 | awk '{printf("%d", $4)}')
 
     if [ $nested_folders -le 0 ]; then
         return
-    elif [ $free_space -le 1000000 ]; then
-        echo "Not enough free space on the filesystem. Exiting..."
-        exit 1
     fi
 
     for i in $(seq 1 "$full_itteraion"); do
@@ -30,7 +26,13 @@ create_folders() {
             while [ -e $file_name ]; do
                 file_name=$(use_filename "$file_chars")
             done
-            dd if=/dev/zero of="$file_name" bs=1024 count="$file_size"
+            free_space=$(df / | tail -n +2 | awk '{printf("%d", $4 * 1024)}')
+            if [ $free_space -le 1000000000 ]; then
+                echo "Not enough free space on the filesystem. Exiting..."
+                exit 1
+            else
+                sudo fallocate -l ${file_size^} $file_name 2>/dev/null
+            fi
             echo "Date $date_for_report created ${file_size}kb sized file: $(pwd)$file_name" >> $log_file
         done
 
@@ -38,4 +40,6 @@ create_folders() {
 
         cd ..
     done
+
+    return 0
 }

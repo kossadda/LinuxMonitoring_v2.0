@@ -20,4 +20,6 @@ timedate_clean() {
     done
 
     echo "Removal completed" >> "$log_file"
+
+    return 0
 }

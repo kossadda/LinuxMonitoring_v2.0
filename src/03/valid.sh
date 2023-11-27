@@ -1,9 +1,8 @@
 #!/bin/bash
 
-method=$1
-
 validation() {
     code=0
+
     if [ $# -ne 1 ]; then
         echo "Enter 1 parameter"
         echo "\"1\" - deleting by log file"
@@ -16,11 +15,25 @@ validation() {
             code=1
         fi
     fi
+
     return $code
+}
+
+log_in_folder() {
+    local presence=0
+
+    if [ -e "report.log" ]; then
+        presence=1
+    elif [ -e "../02/report.log" ]; then
+        presence=2
+    fi
+
+    echo "$presence"
 }
 
 time_check() {
     local time=$1
+
     if [[ ! "$time" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}\ [0-9]{2}:[0-9]{2}$ ]]; then
         echo "Incorrect date and time format entered"
         exit 1
@@ -60,4 +73,6 @@ time_check() {
         echo "Please enter the correct minute [00-59]"
         exit 1
     fi
+
+    return 0
 }

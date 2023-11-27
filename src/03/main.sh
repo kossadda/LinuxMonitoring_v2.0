@@ -4,7 +4,7 @@ method=$1
 
 source ./valid.sh
 source ./clean_by_log.sh
-source ./clean_by_timedate.sh
+source ./clean_by_date.sh
 
 validation $@
 

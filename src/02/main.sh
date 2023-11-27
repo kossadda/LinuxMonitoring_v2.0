@@ -3,6 +3,7 @@
 log_file="$(pwd)/report.log"
 date_for_report=$(date "+%d.%m.%y")
 date=$(date "+%d%m%y")
+time_start=$(date +%s.%N)
 
 if [ ${#3} -ge 3 ]; then
     trimmed_size="${3::-2}"
@@ -27,5 +28,6 @@ if [ $? -eq 0 ]; then
     echo "The trash folder was selected: $random_directory"
     echo "Creating garbage..."
     create_folder_files "$folder_chars" "$file_chars" "$file_size"
+    echo "Script execution time (in seconds) = $(echo "$(date +%s.%N) $time_start" | awk '{printf "%.3f", $1 - $2}')" >> $log_file
     echo "The folder was successfully trashed. The report is saved in the file report.log"
 fi
