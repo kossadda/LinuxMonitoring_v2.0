@@ -11,6 +11,7 @@ log_clean() {
     fi
 
     if [ $presence -ne 0 ]; then
+        echo "Removing garbage using a log file..."
         for folder in $files; do
             sudo rm -rf "$folder"
             echo "Folder $folder" deleted >> "$log_file" 

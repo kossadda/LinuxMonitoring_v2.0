@@ -31,6 +31,22 @@ log_in_folder() {
     echo "$presence"
 }
 
+check_file_mask() {
+    local mask=$1
+    if ! [[ "$mask" =~ ^[a-zA-Z]+_[0-9]{6}.[a-zA-Z]{1,3}$ ]]; then
+        echo "Error:: Некорректный формат маски"
+        exit 1
+    fi
+}
+
+check_folder_mask() {
+    local mask=$1
+    if ! [[ "$mask" =~ ^[a-zA-Z]+_[0-9]{6}$ ]]; then
+        echo "Error:: Некорректный формат маски"
+        exit 1
+    fi
+}
+
 time_check() {
     local time=$1
 
