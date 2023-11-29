@@ -69,50 +69,52 @@ WantedBy=multi-user.target
 **Связать две виртуальные машины**
 
 **1 машина:** `sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s8` <br>
->TYPE=Ethernet
-BOOTPROTO=none
-DEFROUTE=yes
-IPV4_FAILURE_FATAL=no
-IPV6INIT=yes
-IPV6_AUTOCONF=yes
-IPV6_DEFROUTE=yes
-IPV6_FAILURE_FATAL=no
-NAME=enp0s8
-UUID=уникальный_UUID_для_машины_1
-DEVICE=enp0s8
-ONBOOT=yes
-IPADDR=192.168.2.1
-PREFIX=24
-GATEWAY=192.168.2.254
+>TYPE=Ethernet <br>
+BOOTPROTO=none <br>
+DEFROUTE=yes <br>
+IPV4_FAILURE_FATAL=no <br>
+IPV6INIT=yes <br>
+IPV6_AUTOCONF=yes <br>
+IPV6_DEFROUTE=yes <br>
+IPV6_FAILURE_FATAL=no <br>
+NAME=enp0s8 <br>
+UUID=уникальный_UUID_для_машины_1 <br>
+DEVICE=enp0s8 <br>
+ONBOOT=yes <br>
+IPADDR=192.168.2.1 <br>
+PREFIX=24 <br>
+GATEWAY=192.168.2.254 <br>
 DNS1=8.8.8.8
 
+`sudo nmcli connection add con-name "enp0s8" ifname enp0s8 type ethernet` <br>
 `sudo nmcli connection add con-name "enp0s8" ifname enp0s8 type ethernet UUID_MACHINE_1=$(uuidgen)` <br>
 `sudo nmcli connection modify enp0s8 ipv4.addresses 192.168.2.1/24 ipv4.gateway 192.168.2.254` <br>
 `sudo nmcli connection modify enp0s8 ipv4.method manual` <br>
-`sudo nmcli connection modify enp0s8 connection.uuid $UUID_MACHINE_1` <br>
+`sudo systemctl restart NetworkManager` <br>
 
 **2 машина:** `sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s8` <br>
->TYPE=Ethernet
-BOOTPROTO=none
-DEFROUTE=yes
-IPV4_FAILURE_FATAL=no
-IPV6INIT=yes
-IPV6_AUTOCONF=yes
-IPV6_DEFROUTE=yes
-IPV6_FAILURE_FATAL=no
-NAME=enp0s8
-UUID=уникальный_UUID_для_машины_2
-DEVICE=enp0s8
-ONBOOT=yes
-IPADDR=192.168.2.2
-PREFIX=24
-GATEWAY=192.168.2.254
+>TYPE=Ethernet <br>
+BOOTPROTO=none <br>
+DEFROUTE=yes <br>
+IPV4_FAILURE_FATAL=no <br>
+IPV6INIT=yes <br>
+IPV6_AUTOCONF=yes <br>
+IPV6_DEFROUTE=yes <br>
+IPV6_FAILURE_FATAL=no <br>
+NAME=enp0s8 <br>
+UUID=уникальный_UUID_для_машины_2 <br>
+DEVICE=enp0s8 <br>
+ONBOOT=yes <br>
+IPADDR=192.168.2.2 <br>
+PREFIX=24 <br>
+GATEWAY=192.168.2.254 <br>
 DNS1=8.8.8.8
 
+`sudo nmcli connection add con-name "enp0s8" ifname enp0s8 type ethernet` <br>
 `sudo nmcli connection add con-name "enp0s8" ifname enp0s8 type ethernet UUID_MACHINE_2=$(uuidgen)` <br>
 `sudo nmcli connection modify enp0s8 ipv4.addresses 192.168.2.2/24 ipv4.gateway 192.168.2.254` <br>
 `sudo nmcli connection modify enp0s8 ipv4.method manual` <br>
-`sudo nmcli connection modify enp0s8 connection.uuid $UUID_MACHINE_2` <br>
+`sudo systemctl restart NetworkManager` <br>
 
 **1 машина:** `ping 192.168.2.1` <br>
 <img src="../../misc/images/part_8/8.jpg" alt="8" />
