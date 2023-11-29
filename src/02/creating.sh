@@ -76,7 +76,6 @@ create_one_depth() {
         sudo mkdir "$depth_dir/$folder_name"
         echo "Date $date_for_report created folder: $depth_dir/$folder_name" >> $log_file
 
-        # Вызываем функцию для создания файлов в папке
         create_files_in_folder "$folder_chars" "$file_chars" "$file_size" "$depth_dir/$folder_name"
     done
 
