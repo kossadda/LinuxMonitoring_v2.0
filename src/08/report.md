@@ -68,7 +68,7 @@ WantedBy=multi-user.target
 
 **Связать две виртуальные машины**
 
-**1 машина:** `sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s8`
+**1 машина:** `sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s8` <br>
 >TYPE=Ethernet
 BOOTPROTO=none
 DEFROUTE=yes
@@ -85,13 +85,13 @@ IPADDR=192.168.2.1
 PREFIX=24
 GATEWAY=192.168.2.254
 DNS1=8.8.8.8
-`sudo nmcli connection add con-name "enp0s8" ifname enp0s8 type ethernet UUID_MACHINE_1=$(uuidgen)`
-`sudo nmcli connection modify enp0s8 ipv4.addresses 192.168.2.1/24 ipv4.gateway 192.168.2.254`
-`sudo nmcli connection modify enp0s8 ipv4.method manual`
-`sudo nmcli connection modify enp0s8 connection.uuid $UUID_MACHINE_1`
 
+`sudo nmcli connection add con-name "enp0s8" ifname enp0s8 type ethernet UUID_MACHINE_1=$(uuidgen)` <br>
+`sudo nmcli connection modify enp0s8 ipv4.addresses 192.168.2.1/24 ipv4.gateway 192.168.2.254` <br>
+`sudo nmcli connection modify enp0s8 ipv4.method manual` <br>
+`sudo nmcli connection modify enp0s8 connection.uuid $UUID_MACHINE_1` <br>
 
-**2 машина:** `sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s8`
+**2 машина:** `sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s8` <br>
 >TYPE=Ethernet
 BOOTPROTO=none
 DEFROUTE=yes
@@ -108,10 +108,11 @@ IPADDR=192.168.2.2
 PREFIX=24
 GATEWAY=192.168.2.254
 DNS1=8.8.8.8
-`sudo nmcli connection add con-name "enp0s8" ifname enp0s8 type ethernet UUID_MACHINE_2=$(uuidgen)`
-`sudo nmcli connection modify enp0s8 ipv4.addresses 192.168.2.2/24 ipv4.gateway 192.168.2.254`
-`sudo nmcli connection modify enp0s8 ipv4.method manual`
-`sudo nmcli connection modify enp0s8 connection.uuid $UUID_MACHINE_2`
+
+`sudo nmcli connection add con-name "enp0s8" ifname enp0s8 type ethernet UUID_MACHINE_2=$(uuidgen)` <br>
+`sudo nmcli connection modify enp0s8 ipv4.addresses 192.168.2.2/24 ipv4.gateway 192.168.2.254` <br>
+`sudo nmcli connection modify enp0s8 ipv4.method manual` <br>
+`sudo nmcli connection modify enp0s8 connection.uuid $UUID_MACHINE_2` <br>
 
 **1 машина:** `ping 192.168.2.1` <br>
 <img src="../../misc/images/part_8/8.jpg" alt="8" />
