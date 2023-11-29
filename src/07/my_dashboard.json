@@ -1,0 +1,381 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 4,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "gkvNuTHSz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "gkvNuTHSz"
+          },
+          "editorMode": "builder",
+          "expr": "node_disk_io_now{device=\"sda\", job=\"node-exporter\", instance=\"node-exporter:9100\"}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Number of I/O operations",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "gkvNuTHSz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "limit": 1,
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {
+          "valueSize": 50
+        }
+      },
+      "pluginVersion": "8.5.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "gkvNuTHSz"
+          },
+          "editorMode": "code",
+          "expr": "100 -(avg by(instance) (irate(node_cpu_seconds_total{instance=\"node-exporter:9100\", mode=\"idle\"}[5m]))) * 100",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "CPU",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "gkvNuTHSz"
+      },
+      "description": "\n",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "gkvNuTHSz"
+          },
+          "editorMode": "builder",
+          "expr": "node_filesystem_avail_bytes{instance=\"node-exporter:9100\",job=\"node-exporter\",device=\"/dev/sda3\",fstype=\"btrfs\",mountpoint=\"/\"} / 1024 / 1024 / 1024",
+          "hide": false,
+          "range": true,
+          "refId": "Free data"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "gkvNuTHSz"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "node_filesystem_size_bytes{instance=\"node-exporter:9100\",job=\"node-exporter\",device=\"/dev/sda3\",fstype=\"btrfs\",mountpoint=\"/\"} / 1024 / 1024 / 1024 - node_filesystem_avail_bytes{instance=\"node-exporter:9100\",job=\"node-exporter\",device=\"/dev/sda3\",fstype=\"btrfs\",mountpoint=\"/\"} / 1024 / 1024 / 1024",
+          "hide": false,
+          "instant": false,
+          "range": true,
+          "refId": "Used data"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "gkvNuTHSz"
+          },
+          "expr": "node_filesystem_size_bytes{instance=\"node-exporter:9100\",job=\"node-exporter\",device=\"/dev/sda3\",fstype=\"btrfs\",mountpoint=\"/\"} / 1024 / 1024 / 1024",
+          "hide": false,
+          "refId": "Total data"
+        }
+      ],
+      "title": "Data",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "gkvNuTHSz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 8.117,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 6.5
+              }
+            ]
+          },
+          "unit": "decgbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "8.5.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "gkvNuTHSz"
+          },
+          "expr": "node_memory_MemFree_bytes{instance=\"node-exporter:9100\"} / 1024 / 1024/ 1024",
+          "refId": "A"
+        }
+      ],
+      "title": "RAM free",
+      "type": "gauge"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "My_dashboard",
+  "uid": "QbS57ANSz",
+  "version": 2,
+  "weekStart": ""
+}

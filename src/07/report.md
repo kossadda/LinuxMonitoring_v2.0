@@ -43,7 +43,7 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 
 `tar -xf prometheus-2.37.0.linux-amd64.tar.gz && mv prometheus-2.37.0.linux-amd64 /etc/prometheus` <br>
 
-- Создать отдельную учетную запись пользователя без входа в систему для Prometheus.
+- Создать отдельную учетную запись пользователя без входа в систему для Prometheus:
 
 `useradd prometheus --shell=/bin/false --no-create-home` <br>
 
@@ -80,7 +80,7 @@ WantedBy=multi-user.target
 
 `sudo systemctl daemon-reload` <br>
 `systemctl start prometheus` <br>
-`systemctl enable prometheus` <br>
+`systemctl status prometheus` <br>
 
 ## Создание собственного dashboard'а
 
@@ -112,9 +112,16 @@ WantedBy=multi-user.target
 
 <img src="../../misc/images/part_7/7.jpg" alt="7" />
 
-- Запустить bash-скрипт из **Части 2** и посмотреть на нагрузку жесткого диска (место на диске и операции чтения/записи):
+## Тестирование dashboard'а
+
+**Запустить bash-скрипт из Части 2 и посмотреть на нагрузку жесткого диска (место на диске и операции чтения/записи)**
+
+- Создание мусора:
 
 <img src="../../misc/images/part_7/8.jpg" alt="8" />
+
+- Очистка мусора:
+
 <img src="../../misc/images/part_7/9.jpg" alt="9" />
 
 - Установить утилиту stress:
