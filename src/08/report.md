@@ -15,17 +15,17 @@
 - Создать Node Exporter Serve:
 
 `sudo vim /etc/systemd/system/node_exporter.service` <br>
->[Unit]
-Description=Node Exporter
-Wants=network-online.target
-After=network-online.target
-[Service]
-User=node_exporter
-Group=node_exporter
-Type=simple
-ExecStart=/usr/local/bin/node_exporter
-[Install]
-WantedBy=multi-user.target
+>[Unit] <br>
+Description=Node Exporter <br>
+Wants=network-online.target <br>
+After=network-online.target <br>
+[Service] <br>
+User=node_exporter <br>
+Group=node_exporter <br>
+Type=simple <br>
+ExecStart=/usr/local/bin/node_exporter <br>
+[Install] <br>
+WantedBy=multi-user.target <br>
 
 - Перезагрузить systemd и запустить службу Node Exporter:
 

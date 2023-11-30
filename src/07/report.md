@@ -9,13 +9,13 @@
 `sudo vim /etc/yum.repos.d/grafana.repo` <br>
 
 >[grafana]
-name=grafana
-baseurl=https://rpm.grafana.com
-repo_gpgcheck=1
-enabled=1
-gpgcheck=1
-gpgkey=https://rpm.grafana.com/gpg.key
-sslverify=1
+name=grafana <br>
+baseurl=https://rpm.grafana.com <br>
+repo_gpgcheck=1 <br>
+enabled=1 <br>
+gpgcheck=1 <br>
+gpgkey=https://rpm.grafana.com/gpg.key <br>
+sslverify=1 <br>
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 
 - После добавления репозитория можно установить Grafana:
@@ -63,17 +63,17 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 
 `sudo vim /etc/systemd/system/prometheus.service` <br>
 
->Description=Prometheus
-Wants=network-online.target
-After=network-online.target
-User=prometheus
-Group=prometheus
-Type=simple
-ExecStart=/usr/local/bin/prometheus \
---config.file /etc/prometheus/prometheus.yml \
---storage.tsdb.path /var/lib/prometheus/ \
---web.console.templates=/etc/prometheus/consoles \
---web.console.libraries=/etc/prometheus/console_libraries
+>Description=Prometheus <br>
+Wants=network-online.target <br>
+After=network-online.target <br>
+User=prometheus <br>
+Group=prometheus <br>
+Type=simple <br>
+ExecStart=/usr/local/bin/prometheus \ <br>
+--config.file /etc/prometheus/prometheus.yml \ <br>
+--storage.tsdb.path /var/lib/prometheus/ \ <br>
+--web.console.templates=/etc/prometheus/consoles \ <br>
+--web.console.libraries=/etc/prometheus/console_libraries <br>
 WantedBy=multi-user.target
 
 - Перезагрузить systemd и запустить службу Prometheus:
@@ -130,5 +130,5 @@ WantedBy=multi-user.target
 
 - Запустить команду stress и посмотреть на нагрузку жесткого диска, оперативной памяти и ЦПУ:
 
-`stress -c 2 -i 1 -m 1 --vm-bytes 32M -t 60s`
+`stress -c 2 -i 1 -m 1 --vm-bytes 32M -t 60s` <br>
 <img src="../../misc/images/part_7/10.jpg" alt="10" />
