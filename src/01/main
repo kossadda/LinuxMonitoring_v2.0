@@ -1,0 +1,26 @@
+#!/bin/bash
+
+source ./validation.sh
+validation $@
+if [[ $? -eq 0 ]]; then
+  echo "Success"
+else
+  echo "Fail"
+  exit 
+fi
+
+readonly FILE_CHARS=$(echo ${5} | awk -F. '{print $1}')
+readonly FILE_EXTENSION=$(echo ${5} | awk -F. '{print $2}')
+readonly DATE=$(date "+%d%m%y")
+readonly PATH=$1
+readonly NEST=$2
+readonly FOLDER_CHARS=$3
+readonly FILE_COUNT=$4
+readonly FILE_SIZE=${6::-2}
+
+source ./generate_name.sh
+
+# main() {
+  # foldername
+# }
+# main $@
