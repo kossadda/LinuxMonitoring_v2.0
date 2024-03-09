@@ -1,3 +1,8 @@
 #!/bin/bash
 
-./main "/home/kossadda/develop/monitoring/src/01/" "25" "folder" "5" "filenam.zip" "50kb"
+if [[ $# -eq 1 ]]; then
+  rm -rf ./test_fold/* ./report.log
+  clear
+else
+  ./main "/home/kossadda/develop/monitoring/src/01/test_fold" "150" "folder" "5" "filenam.zip" "10kb"
+fi

@@ -2,15 +2,16 @@
 
 validation() {
   code=0
-  
+
+  echo -e ${YELLOW}
   if [ $# -lt 1 ] || [ $# -gt 6 ]; then
-    echo "Enter 6 parameters:"
-    echo "1) Absolute path"
-    echo "2) Number of subfolders"
-    echo "3) Letters in folder names"
-    echo "4) Number of files in each folder"
-    echo "5) Letters in file names"
-    echo "6) File size in kilobytes"
+    echo -e "Entered $# parameters. Enter 6 parameters:\n"
+    echo "Parameter 1: absolute path - starts with \"/\". Example: /home"
+    echo "Parameter 2: number of subfolders - integer. Example: 5"
+    echo "Parameter 3: letters in folder names - string, length [1-7]. Example: abcd"
+    echo "Parameter 4: number of files in each folder - integer. Example: 15"
+    echo "Parameter 5: letters in file names - string, filename length [1-7], file extension length [1-3]. Example: abc.xz"
+    echo "Parameter 6: file size in kilobytes - integer, range [0-100]. Example: 15kb"
     code=1
   else
     if ! [[ ${1} =~ ^/.*$ ]]; then
@@ -48,6 +49,7 @@ validation() {
       code=1
     fi
   fi
+  echo -en ${RESET}
 
   return $code
 }

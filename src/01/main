@@ -1,26 +1,70 @@
 #!/bin/bash
 
-source ./validation.sh
-validation $@
-if [[ $? -eq 0 ]]; then
-  echo "Success"
-else
-  echo "Fail"
-  exit 
-fi
-
-readonly FILE_CHARS=$(echo ${5} | awk -F. '{print $1}')
-readonly FILE_EXTENSION=$(echo ${5} | awk -F. '{print $2}')
+readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+readonly LOG_PATH="${SCRIPT_DIR}/report.log"
 readonly DATE=$(date "+%d%m%y")
-readonly PATH=$1
-readonly NEST=$2
-readonly FOLDER_CHARS=$3
-readonly FILE_COUNT=$4
-readonly FILE_SIZE=${6::-2}
+source ${SCRIPT_DIR}/configuration.conf
 
-source ./generate_name.sh
+main() {
+  local -r start_time=$(date +%s)
 
-# main() {
-  # foldername
-# }
-# main $@
+  source ${SCRIPT_DIR}/validation.sh
+  validation $@
+  if [[ $? -eq 1 ]]; then
+    red "\nExiting from program\n"
+    exit 
+  fi
+
+  readonly TRASH_PATH=$1
+  readonly NEST=$2
+  readonly FOLDER_CHARS=$3
+  readonly FILES_COUNT=$4
+  readonly FILE_CHARS=$(echo ${5} | awk -F. '{print $1}')
+  readonly FILE_EXTENSION=$(echo ${5} | awk -F. '{print $2}')
+  readonly FILE_SIZE=$((${6::-2} * 1024))
+
+  echo -en "${YELLOW}"
+  echo " __________________________________________________________________"
+  echo "|                                                                  |"
+  echo "|                        ENTERED PARAMETERS:                       |"
+  echo "|__________________________________________________________________|"
+  echo -e "${RESET}"
+
+  bold "$(yellow "Path of generate trash:") ${TRASH_PATH}"
+  bold "$(yellow "Number of nest folders:") ${NEST}"
+  bold "$(yellow "Letters in foldernames:") ${FOLDER_CHARS}"
+  bold "$(yellow "Files count per folder:") ${FILES_COUNT}"
+  bold "$(yellow "Letters in files names:") ${FILE_CHARS}.${FILE_EXTENSION}"
+  bold "$(yellow "Size of generate trash:") ${6}\n"
+  
+  echo -en "${YELLOW}"
+  echo " __________________________________________________________________"
+  echo "|                                                                  |"
+  echo "|                         START GENERATING:                        |"
+  echo "|__________________________________________________________________|"
+  echo -e "${RESET}"
+
+  source ${SCRIPT_DIR}/generate_files.sh
+  generate_files_and_folders
+
+  local -r end_time=$(date +%s)
+  local -r execute_time=$((end_time - start_time))
+
+  if [[ ${overflow} -eq 1 ]]; then
+    red "\nWARNING: Not enough free disk space"
+  else
+    green "\nTrash generate succefully"
+  fi
+
+  bold "\nGenerated ${folders} folders and ${files} files for ${execute_time} seconds\n"
+  echo -e "${BOLD}File ${YELLOW}${LOG_PATH}${RESET} ${BOLD}contains information about the generation${RESET}"
+
+  echo -e "${YELLOW}"
+  echo " __________________________________________________________________"
+  echo "|                                                                  |"
+  echo "|                             COMPLETE                             |"
+  echo "|__________________________________________________________________|"
+  echo -e "${RESET}"
+}
+
+main $@
