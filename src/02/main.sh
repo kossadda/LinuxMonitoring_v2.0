@@ -1,33 +1,30 @@
 #!/bin/bash
 
-log_file="$(pwd)/report.log"
-date_for_report=$(date "+%d.%m.%y")
-date=$(date "+%d%m%y")
-time_start=$(date +%s.%N)
+main() {
+  readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  source ${SCRIPT_DIR}/configuration.conf
 
-if [ ${#3} -ge 3 ]; then
-    trimmed_size="${3::-2}"
-else
-    trimmed_size=101
-fi
+  source ${SCRIPT_DIR}/validation.sh
+  validation $@
+  if [[ $? -eq 1 ]]; then
+    yellow "\nPlease try again. ${RED}Exiting from program...${RESET}\n"
+    exit 1
+  fi
 
-folder_chars=$1
-file_chars=$2
-file_size=$trimmed_size
+  # readonly TRASH_PATH=${1}
+  readonly FOLDER_CHARS=${1}
+  readonly FILE_CHARS=$(echo ${2} | awk -F. '{print $1}')
+  readonly FILE_EXTENSION=$(echo ${2} | awk -F. '{print $2}')
+  readonly INPUT_SIZE=${3}
+  readonly FILE_SIZE=$((${3::-2} * 1024))
 
-source ./valid.sh
-source ./gen_names.sh
-source ./creating.sh
+  source ${SCRIPT_DIR}/dialog.sh
+  input_information ${5} ${6}
 
-validation $@
+  source ${SCRIPT_DIR}/generate_files.sh
+  generate_files_and_folders
 
-if [ $? -eq 0 ]; then
-    sudo echo "Search random directory..."
-    random_directory=$(find / -type d -readable -executable -not \( -name "*bin*" -o -name "*sbin*" \) -print 2>/dev/null | shuf -n 1)
-    cd "$random_directory"
-    echo "The trash folder was selected: $random_directory"
-    echo "Creating garbage..."
-    create_folder_files "$folder_chars" "$file_chars" "$file_size"
-    echo "Script execution time (in seconds) = $(echo "$(date +%s.%N) $time_start" | awk '{printf "%.3f", $1 - $2}')" >> $log_file
-    echo "The folder was successfully trashed. The report is saved in the file report.log"
-fi
+  output_result
+}
+
+main $@

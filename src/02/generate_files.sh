@@ -6,12 +6,18 @@ generate_files_and_folders() {
   if [[ ${OVERFLOW} -eq 0 ]]; then  
     source ${SCRIPT_DIR}/generate_name.sh
 
-    local depth=1
-    create_one_depth ${TRASH_PATH}
+    while [[ ${OVERFLOW} -eq 0 ]]; do
+      while ! [[ -w ${TRASH_PATH} ]]; do
+        TRASH_PATH=$(find / -type d 2>/dev/null | grep -Ev '/bin$|/sbin$' | shuf -n 1)
+      done
 
-    while [[ ${FOLDERS} -lt ${NEST} ]] && [[ ${OVERFLOW} -eq 0 ]]; do
-      create_depth ${depth}
-      ((depth++))
+      local depth=1
+      create_one_depth ${TRASH_PATH}
+
+      while [[ ${SUBFOLDERS} -lt ${NEST} ]] && [[ ${OVERFLOW} -eq 0 ]]; do
+        create_depth ${depth}
+        ((depth++))
+      done
     done
   fi
 }
@@ -22,7 +28,7 @@ create_depth() {
   for folder in $(find ${TRASH_PATH} -mindepth ${depth} -maxdepth ${depth} -type d); do
     if ! [[ ${folder##*/} =~ ^[a-zA-Z]*_[0-9]{6}$ ]]; then
       continue
-    elif [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
+    elif [[ ${SUBFOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
       break
     fi
 
@@ -42,9 +48,9 @@ create_one_depth() {
     done
     mkdir "${folder_in_depth_dir}/${folder_name}"
     report_folder_create
-    ((FOLDERS++))
+    ((SUBFOLDERS++))
     create_files_in_folder "${folder_in_depth_dir}/${folder_name}"
-    if [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
+    if [[ ${SUBFOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
       generate_status
       break
     fi
@@ -53,8 +59,9 @@ create_one_depth() {
 
 create_files_in_folder() {
   local folder_in_depth_dir=$1
+  local files_count=$((RANDOM % (25 - 5) + 5))
 
-  for ((j = 0; j < FILES_COUNT; j++, ++FILES)); do
+  for ((j = 0; j < files_count; j++, ++FILES)); do
     file_name=$(get_filename)
     while [[ -e "${folder_in_depth_dir}/${file_name}" ]]; do
       file_name=$(get_filename)
