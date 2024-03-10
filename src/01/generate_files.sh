@@ -1,11 +1,8 @@
 #!/bin/bash
 
 generate_files_and_folders() {
-  declare OVERFLOW=0
-  declare FOLDERS=0
-  declare FILES=0
-
   check_overflow_memory
+  
   if [[ ${OVERFLOW} -eq 0 ]]; then  
     source ${SCRIPT_DIR}/generate_name.sh
 
@@ -43,10 +40,10 @@ create_one_depth() {
     done
     mkdir "${folder_in_depth_dir}/${folder_name}"
     report_folder_create
-    create_files_in_folder "${folder_in_depth_dir}/${folder_name}"
     ((FOLDERS++))
-    generate_status
+    create_files_in_folder "${folder_in_depth_dir}/${folder_name}"
     if [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
+      generate_status
       break
     fi
   done

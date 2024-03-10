@@ -1,6 +1,6 @@
 #!/bin/bash
 
-gen_name() {
+generate_name() {
   local addition_count=$((RANDOM % (75 - 4) + 4))
   local name=${1}
   local random_index
@@ -14,13 +14,13 @@ gen_name() {
 }
 
 get_filename() {
-  local filename=$(gen_name ${FILE_CHARS})
+  local filename=$(generate_name ${FILE_CHARS})
 
   echo "${filename}_${DATE}.${FILE_EXTENSION}"
 }
 
 get_foldername() {
-  local foldername=$(gen_name ${FOLDER_CHARS})
+  local foldername=$(generate_name ${FOLDER_CHARS})
 
   echo "${foldername}_${DATE}"
 }

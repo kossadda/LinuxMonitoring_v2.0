@@ -37,16 +37,21 @@ input_information() {
 
 
 output_result() {
-  local -r end_time=$(date +%s)
-  local -r execute_time=$((end_time - start_time))
+  readonly END_TIME=$(date +%s)
+  readonly EXECUTE_TIME=$((END_TIME - START_TIME))
+  readonly REPORT_END_TIME=$(date '+%Y-%m-%d %H:%M')
 
   if [[ ${OVERFLOW} -eq 1 ]]; then
-    red "\nWARNING: Not enough free disk space"
+    red "\nWARNING: Not enough free disk space\n"
   else
-    green "\nTrash generate succefully"
+    green "\nTrash generate succefully\n"
   fi
 
-  bold "\nGenerated ${FOLDERS} folders and ${FILES} files for ${execute_time} seconds\n"
+  echo "Script started at ${REPORT_START_TIME}"
+  echo "Script finised at ${REPORT_END_TIME}"
+  (echo "Script started at ${REPORT_START_TIME}")  >> ${LOG_PATH}
+  (echo "Script finised at ${REPORT_END_TIME}") >> ${LOG_PATH}
+  bold "\nGenerated ${YELLOW}${FOLDERS}${RESET} ${BOLD}folders and ${YELLOW}${FILES}${RESET} ${BOLD}files for ${YELLOW}${EXECUTE_TIME}${RESET} ${BOLD}seconds\n"
   echo -e "${BOLD}File ${YELLOW}${LOG_PATH}${RESET} ${BOLD}contains information about the generation${RESET}"
 
   echo -e "${YELLOW}"
