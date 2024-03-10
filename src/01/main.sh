@@ -7,7 +7,7 @@ main() {
   source ${SCRIPT_DIR}/validation.sh
   validation $@
   if [[ $? -eq 1 ]]; then
-    red "\nExiting from program\n"
+    yellow "\nPlease try again. ${RED}Exiting from program...${RESET}\n"
     exit 1
   fi
 
