@@ -14,7 +14,7 @@ main() {
   validation $@
   if [[ $? -eq 1 ]]; then
     red "\nExiting from program\n"
-    exit 
+    exit 1
   fi
 
   readonly TRASH_PATH=${1}
