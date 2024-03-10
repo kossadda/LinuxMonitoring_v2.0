@@ -37,7 +37,6 @@ output_result() {
   echo "Script started at ${REPORT_START_TIME}"
   echo "Script finised at ${REPORT_END_TIME}"
   bold "\nGenerated ${YELLOW}${FOLDERS}${RESET} ${BOLD}folders and ${YELLOW}${FILES}${RESET} ${BOLD}files for ${YELLOW}${EXECUTE_TIME}${RESET} ${BOLD}seconds\n"
-  echo -e "${BOLD}File ${YELLOW}${LOG_PATH}${RESET} ${BOLD}contains information about the generation${RESET}"
 
   report_results
 
@@ -50,9 +49,12 @@ output_result() {
 }
 
 report_results() {
-  sed -i "1s|^|$(echo -e "Script finised at ${REPORT_END_TIME}")\n\n\n|" ${LOG_PATH}
-  sed -i "1s|^|$(echo -e "Script started at ${REPORT_START_TIME}")\n|" ${LOG_PATH}
-  sed -i "1s|^|$(echo -e "Generated ${FOLDERS} folders and ${FILES} files for ${EXECUTE_TIME} seconds")\n|" ${LOG_PATH}
+  if [ -e "${SCRIPT_DIR}/report.log" ]; then
+    echo -e "${BOLD}File ${YELLOW}${LOG_PATH}${RESET} ${BOLD}contains information about the generation${RESET}"
+    sed -i "1s|^|$(echo -e "Script finised at ${REPORT_END_TIME}")\n\n\n|" ${LOG_PATH}
+    sed -i "1s|^|$(echo -e "Script started at ${REPORT_START_TIME}")\n|" ${LOG_PATH}
+    sed -i "1s|^|$(echo -e "Generated ${FOLDERS} folders and ${FILES} files for ${EXECUTE_TIME} seconds")\n|" ${LOG_PATH}
+  fi
 }
 
 generate_status() {

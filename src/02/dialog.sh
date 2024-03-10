@@ -9,8 +9,8 @@ input_information() {
   echo -e "${RESET}"
 
   bold "$(yellow "Letters in foldernames:") ${FOLDER_CHARS}"
-  bold "$(yellow "Letters in files names:") ${2}"
-  bold "$(yellow "Size of generate trash:") ${3}\n"
+  bold "$(yellow "Letters in files names:") ${1}"
+  bold "$(yellow "Size of generate trash:") ${2}\n"
   
   echo -en "${YELLOW}"
   echo " __________________________________________________________________"
@@ -34,7 +34,6 @@ output_result() {
   echo "Script started at ${REPORT_START_TIME}"
   echo "Script finised at ${REPORT_END_TIME}"
   bold "\nGenerated ${YELLOW}${FOLDERS}${RESET} ${BOLD}folders and ${YELLOW}${FILES}${RESET} ${BOLD}files for ${YELLOW}${EXECUTE_TIME}${RESET} ${BOLD}seconds\n"
-  echo -e "${BOLD}File ${YELLOW}${LOG_PATH}${RESET} ${BOLD}contains information about the generation${RESET}"
 
   report_results
 
@@ -47,13 +46,16 @@ output_result() {
 }
 
 report_results() {
-  sed -i "1s|^|$(echo -e "Script finised at ${REPORT_END_TIME}")\n\n\n|" ${LOG_PATH}
-  sed -i "1s|^|$(echo -e "Script started at ${REPORT_START_TIME}")\n|" ${LOG_PATH}
-  sed -i "1s|^|$(echo -e "Generated ${FOLDERS} folders and ${FILES} files for ${EXECUTE_TIME} seconds")\n|" ${LOG_PATH}
+  if [ -e "${SCRIPT_DIR}/report.log" ]; then
+    echo -e "${BOLD}File ${YELLOW}${LOG_PATH}${RESET} ${BOLD}contains information about the generation${RESET}"
+    sed -i "1s|^|$(echo -e "Script finised at ${REPORT_END_TIME}")\n\n\n|" ${LOG_PATH}
+    sed -i "1s|^|$(echo -e "Script started at ${REPORT_START_TIME}")\n|" ${LOG_PATH}
+    sed -i "1s|^|$(echo -e "Generated ${FOLDERS} folders and ${FILES} files for ${EXECUTE_TIME} seconds")\n|" ${LOG_PATH}
+  fi
 }
 
 generate_status() {
-  echo -ne "\rIn progress... Generated ${YELLOW}${FOLDERS}${RESET} folders and ${YELLOW}${FILES}${RESET} files"
+  echo -ne "\rIn progress... Generated ${YELLOW}$((FOLDERS + SUBFOLDERS))${RESET} folders and ${YELLOW}${FILES}${RESET} files"
 }
 
 report_file_create() {

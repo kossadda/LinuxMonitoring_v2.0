@@ -2,22 +2,35 @@
 
 generate_files_and_folders() {
   check_overflow_memory
-  
   if [[ ${OVERFLOW} -eq 0 ]]; then  
     source ${SCRIPT_DIR}/generate_name.sh
 
-    while [[ ${OVERFLOW} -eq 0 ]]; do
-      while ! [[ -w ${TRASH_PATH} ]]; do
-        TRASH_PATH=$(find / -type d 2>/dev/null | grep -Ev '/bin$|/sbin$' | shuf -n 1)
-      done
+    local trash_array
+    if [[ $EUID -eq 0 ]]; then
+      trash_array=($(find / -type d 2>/dev/null | grep -Ev '/bin$|/sbin$'))
+    else
+      trash_array=($(find /home -type d 2>/dev/null))
+    fi
 
+    while [[ ${OVERFLOW} -eq 0 ]]; do
+      while true; do
+        TRASH_PATH=${trash_array[$(( $RANDOM % ${#trash_array[@]} ))]}
+        if mkdir ${TRASH_PATH}/test 2>/dev/null; then
+          rm -rf ${TRASH_PATH}/test
+          break
+        fi
+      done
+      
       local depth=1
+      NEST=$((RANDOM % (100 - 10) + 10))
       create_one_depth ${TRASH_PATH}
 
       while [[ ${SUBFOLDERS} -lt ${NEST} ]] && [[ ${OVERFLOW} -eq 0 ]]; do
         create_depth ${depth}
         ((depth++))
       done
+      FOLDERS=$((FOLDERS + SUBFOLDERS))
+      SUBFOLDERS=0
     done
   fi
 }
