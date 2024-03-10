@@ -6,7 +6,7 @@ gen_name() {
   local random_index
 
   for ((i = 0; i < ${addition_count}; i++)); do
-    random_index=$((RANDOM % (${#name} - 1) + 1))
+    random_index=$((RANDOM % ${#name}))
     name=${name:0:random_index}${name:random_index:1}${name:random_index:${#name}}
   done
 

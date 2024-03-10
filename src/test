@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [[ $# -eq 1 ]]; then
+  rm -rf ./test_fold/* ./report.log
+  clear
+else
+  ./main "/home/kossadda/develop/monitoring/src/01/test_fold" "50" "folder" "50" "filenam.zip" "50kb"
+fi

@@ -42,11 +42,10 @@ create_one_depth() {
       folder_name=$(get_foldername)
     done
     mkdir "${folder_in_depth_dir}/${folder_name}"
-    echo "Date ${DATE} created folder: ${folder_in_depth_dir}/${folder_name}" >> ${LOG_PATH}
-
+    report_folder_create
     create_files_in_folder "${folder_in_depth_dir}/${folder_name}"
     ((folders++))
-    echo -ne "\rIn progress... Generated ${YELLOW}${folders}${RESET} folders and ${YELLOW}${files}${RESET} files" 
+    generate_status
     if [[ ${folders} -ge ${NEST} ]] || [[ ${overflow} -eq 1 ]]; then
       break
     fi
@@ -56,9 +55,9 @@ create_one_depth() {
 create_files_in_folder() {
   local folder_in_depth_dir=$1
 
-  for ((j = 0; j < FILES_COUNT; j++)); do
+  for ((j = 0; j < FILES_COUNT; j++, ++files)); do
     file_name=$(get_filename)
-    while [ -e $file_name ]; do
+    while [ -e "${folder_in_depth_dir}/${file_name}" ]; do
       file_name=$(get_filename)
     done
 
@@ -68,9 +67,8 @@ create_files_in_folder() {
     fi
     
     fallocate -l ${FILE_SIZE^} ${folder_in_depth_dir}/${file_name} 2>/dev/null
-    echo "Date ${DATE} created ${FILE_SIZE}Mb sized file: ${folder_in_depth_dir}/${file_name}" >> ${LOG_PATH}
-    echo -ne "\rIn progress... Generated ${YELLOW}${folders}${RESET} folders and ${YELLOW}${files}${RESET} files" 
-    ((files++))
+    report_file_create
+    generate_status
   done
 }
 
