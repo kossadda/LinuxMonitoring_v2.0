@@ -20,11 +20,13 @@ create_depth() {
   local -r depth=$1
 
   for folder in $(find ${TRASH_PATH} -mindepth ${depth} -maxdepth ${depth} -type d); do
-    create_one_depth ${folder}
-
-    if [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
+    if ! [[ ${folder##*/} =~ ^[a-zA-Z]*_[0-9]{6}$ ]]; then
+      continue
+    elif [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
       break
     fi
+
+    create_one_depth ${folder}
   done
 }
 
