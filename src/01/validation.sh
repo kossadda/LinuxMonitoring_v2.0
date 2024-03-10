@@ -1,10 +1,10 @@
 #!/bin/bash
 
 validation() {
-  code=0
+  local code=0
 
   echo -e ${YELLOW}
-  if [ $# -lt 1 ] || [ $# -gt 6 ]; then
+  if [[ $# -lt 1 ]] || [[ $# -gt 6 ]]; then
     echo -e "Entered $# parameters. Enter 6 parameters:\n"
     echo "Parameter 1: absolute path - starts with \"/\". Example: /home"
     echo "Parameter 2: number of subfolders - integer. Example: 5"
@@ -44,8 +44,8 @@ validation() {
       code=1
     fi
 
-    if ! [[ "$6" =~ ^[0-9]+kb$ ]] || [ ${6::-2} -gt 100 ]; then
-      echo "Parameter 6: file size in kilobytes - integer, range [0-100]. Example: 15kb"
+    if ! [[ "$6" =~ ^[0-9]+kb$ ]] || [[ ${6::-2} -gt 100 ]] || [[ ${6::-2} -eq 0 ]]; then
+      echo "Parameter 6: file size in kilobytes - integer, range [1-100]. Example: 15kb"
       code=1
     fi
   fi

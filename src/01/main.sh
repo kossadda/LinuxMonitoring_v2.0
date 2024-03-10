@@ -1,14 +1,8 @@
 #!/bin/bash
 
-readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-readonly LOG_PATH="${SCRIPT_DIR}/report.log"
-readonly DATE=$(date "+%d%m%y")
-readonly REPORT_DATE=$(date "+%d.%m.%y")
-source ${SCRIPT_DIR}/configuration.conf
-source ${SCRIPT_DIR}/dialog.sh
-
 main() {
-  local -r start_time=$(date +%s)
+  readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  source ${SCRIPT_DIR}/configuration.conf
 
   source ${SCRIPT_DIR}/validation.sh
   validation $@
@@ -26,6 +20,7 @@ main() {
   readonly INPUT_SIZE=${6}
   readonly FILE_SIZE=$((${6::-2} * 1024))
 
+  source ${SCRIPT_DIR}/dialog.sh
   input_information ${5} ${6}
 
   source ${SCRIPT_DIR}/generate_files.sh

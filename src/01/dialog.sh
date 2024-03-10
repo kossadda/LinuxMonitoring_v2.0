@@ -1,7 +1,7 @@
 #!/bin/bash
 
 generate_status() {
-  echo -ne "\rIn progress... Generated ${YELLOW}${folders}${RESET} folders and ${YELLOW}${files}${RESET} files"
+  echo -ne "\rIn progress... Generated ${YELLOW}${FOLDERS}${RESET} folders and ${YELLOW}${FILES}${RESET} files"
 }
 
 report_file_create() {
@@ -40,13 +40,13 @@ output_result() {
   local -r end_time=$(date +%s)
   local -r execute_time=$((end_time - start_time))
 
-  if [[ ${overflow} -eq 1 ]]; then
+  if [[ ${OVERFLOW} -eq 1 ]]; then
     red "\nWARNING: Not enough free disk space"
   else
     green "\nTrash generate succefully"
   fi
 
-  bold "\nGenerated ${folders} folders and ${files} files for ${execute_time} seconds\n"
+  bold "\nGenerated ${FOLDERS} folders and ${FILES} files for ${execute_time} seconds\n"
   echo -e "${BOLD}File ${YELLOW}${LOG_PATH}${RESET} ${BOLD}contains information about the generation${RESET}"
 
   echo -e "${YELLOW}"

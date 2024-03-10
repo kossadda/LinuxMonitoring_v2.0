@@ -1,18 +1,18 @@
 #!/bin/bash
 
 generate_files_and_folders() {
-  overflow=0
-  folders=0
-  files=0
+  declare OVERFLOW=0
+  declare FOLDERS=0
+  declare FILES=0
 
-  overflow_memory
-  if [[ ${overflow} -eq 0 ]]; then  
+  check_overflow_memory
+  if [[ ${OVERFLOW} -eq 0 ]]; then  
     source ${SCRIPT_DIR}/generate_name.sh
 
     local depth=1
     create_one_depth ${TRASH_PATH}
 
-    while [ ${folders} -lt ${NEST} ] && [[ ${overflow} -eq 0 ]]; do
+    while [ ${FOLDERS} -lt ${NEST} ] && [[ ${OVERFLOW} -eq 0 ]]; do
       create_depth ${depth}
       ((depth++))
     done
@@ -25,7 +25,7 @@ create_depth() {
   for folder in $(find ${TRASH_PATH} -mindepth ${depth} -maxdepth ${depth} -type d); do
     create_one_depth ${folder}
 
-    if [[ ${folders} -ge ${NEST} ]] || [[ ${overflow} -eq 1 ]]; then
+    if [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
       break
     fi
   done
@@ -44,9 +44,9 @@ create_one_depth() {
     mkdir "${folder_in_depth_dir}/${folder_name}"
     report_folder_create
     create_files_in_folder "${folder_in_depth_dir}/${folder_name}"
-    ((folders++))
+    ((FOLDERS++))
     generate_status
-    if [[ ${folders} -ge ${NEST} ]] || [[ ${overflow} -eq 1 ]]; then
+    if [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
       break
     fi
   done
@@ -55,14 +55,14 @@ create_one_depth() {
 create_files_in_folder() {
   local folder_in_depth_dir=$1
 
-  for ((j = 0; j < FILES_COUNT; j++, ++files)); do
+  for ((j = 0; j < FILES_COUNT; j++, ++FILES)); do
     file_name=$(get_filename)
     while [ -e "${folder_in_depth_dir}/${file_name}" ]; do
       file_name=$(get_filename)
     done
 
-    overflow_memory
-    if [ ${overflow} -eq 1 ]; then
+    check_overflow_memory
+    if [ ${OVERFLOW} -eq 1 ]; then
       break
     fi
     
@@ -72,12 +72,12 @@ create_files_in_folder() {
   done
 }
 
-overflow_memory() {
+check_overflow_memory() {
   local -r memory=$(df / | grep /$ | awk '{print $4}')
 
   if [[ ${memory} -le 1048576 ]]; then
-    overflow=1
+    OVERFLOW=1
   else
-    overflow=0
+    OVERFLOW=0
   fi
 }
