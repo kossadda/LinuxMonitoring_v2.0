@@ -45,6 +45,22 @@ validation() {
     if ! [[ "$5" =~ ^[a-zA-Z]{1,7}\.[a-zA-Z]{1,3}$ ]]; then
       echo -e "Invalid ${RED}${5}${YELLOW} letters in file names. Need string, name length [1-7], extension length [1-3]. ${GREEN}Example: az.az${YELLOW}"
       code=1
+    else
+      if [[ ${code} -eq 0 ]]; then
+        local filechars=$(get_no_repeat_chars $(echo ${5} | awk -F. '{print $1}'))
+        local extension_size=$(echo ${5} | awk -F. '{print $2}')
+
+        if [[ ${#filechars} -eq 1 ]] && [[ ${4} -gt $((244 - ${#extension_size})) ]]; then
+          code=1
+          echo -e "Invalid ${RED}${4}${YELLOW} number of files. The maximum number of combinations of ${RED}${5}${YELLOW} is $((244 - ${#extension_size}))"
+        elif [[ ${#filechars} -eq 2 ]] && [[ ${4} -gt $((30375 - ${#extension_size} * 244)) ]]; then
+          code=1
+          echo -e "Invalid ${RED}${4}${YELLOW} number of files. The maximum number of combinations of ${RED}${5}${YELLOW} is $((30375 - ${#extension_size} * 244))"
+        elif [[ ${#filechars} -eq 3 ]] && [[ ${4} -gt $((2500249 - ${#extension_size} * 30375)) ]]; then
+          code=1
+          echo -e "Invalid ${RED}${4}${YELLOW} number of files. The maximum number of combinations of ${RED}${5}${YELLOW} is $((2500249 - ${#extension_size} * 30375))"
+        fi
+      fi
     fi
 
     if ! [[ "$6" =~ ^[0-9]+kb$ ]] || [[ ${6::-2} -gt 100 ]] || [[ ${6::-2} -eq 0 ]]; then
@@ -55,4 +71,19 @@ validation() {
   echo -en ${RESET}
 
   return $code
+}
+
+get_no_repeat_chars() {
+  local norepeat=""
+  local prev_char=""
+
+  for ((i = 0; i < ${#1}; i++)); do
+    local current_char="${1:i:1}"
+    if [[ $current_char != $prev_char ]]; then
+      norepeat="${norepeat}${current_char}"
+    fi
+    prev_char=$current_char
+  done
+
+  echo ${norepeat}
 }

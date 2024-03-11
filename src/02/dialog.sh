@@ -26,9 +26,7 @@ output_result() {
   readonly REPORT_END_TIME=$(date '+%Y-%m-%d %H:%M')
 
   if [[ ${OVERFLOW} -eq 1 ]]; then
-    red "\nWARNING: Not enough free disk space\n"
-  else
-    green "\nTrash generate succefully\n"
+    green "\nTrash generate succefully. There is 1GB of free space left on the disk\n"
   fi
 
   echo "Script started at ${REPORT_START_TIME}"

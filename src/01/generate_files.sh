@@ -36,14 +36,15 @@ create_one_depth() {
   local folder_name
 
   for ((i = 0; i < nest_num; i++)); do
-    folder_name=$(get_foldername)
+    folder_name=$(get_foldername ${folder_in_depth_dir})
     while [[ -d "${folder_in_depth_dir}/${folder_name}" ]]; do
-      folder_name=$(get_foldername)
+      folder_name=$(get_foldername ${folder_in_depth_dir})
     done
-    mkdir "${folder_in_depth_dir}/${folder_name}"
-    report_folder_create
-    ((FOLDERS++))
-    create_files_in_folder "${folder_in_depth_dir}/${folder_name}"
+    if mkdir "${folder_in_depth_dir}/${folder_name}"; then
+      ((FOLDERS++))
+      report_folder_create
+      create_files_in_folder "${folder_in_depth_dir}/${folder_name}"
+    fi
     if [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
       generate_status
       break
@@ -54,10 +55,10 @@ create_one_depth() {
 create_files_in_folder() {
   local folder_in_depth_dir=$1
 
-  for ((j = 0; j < FILES_COUNT; j++, ++FILES)); do
-    file_name=$(get_filename)
+  for ((j = 0; j < FILES_COUNT; j++)); do
+    file_name=$(get_filename ${folder_in_depth_dir})
     while [[ -e "${folder_in_depth_dir}/${file_name}" ]]; do
-      file_name=$(get_filename)
+      file_name=$(get_filename ${folder_in_depth_dir})
     done
 
     check_overflow_memory
@@ -65,9 +66,11 @@ create_files_in_folder() {
       break
     fi
     
-    fallocate -l ${FILE_SIZE^} ${folder_in_depth_dir}/${file_name} 2>/dev/null
-    report_file_create
-    generate_status
+    if fallocate -l ${FILE_SIZE^} ${folder_in_depth_dir}/${file_name} 2>/dev/null; then
+      ((FILES++))
+      report_file_create
+      generate_status
+    fi
   done
 }
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 generate_name() {
-  local addition_count=$((RANDOM % (75 - 4) + 4))
+  local addition_count=$((RANDOM % (35 - 4) + 4))
   local name=${1}
   local random_index
 
