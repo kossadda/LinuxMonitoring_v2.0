@@ -79,7 +79,7 @@ check_date_and_time() {
       fi
       
       if [[ ${mistake_date} -eq 1 ]] && [[ ${mistake_time} -eq 1 ]]; then
-        echo -e "${1}: incorrect date and time ${RED}${check}${YELLOW}"
+        echo -e "${1}: incorrect date and time ${RED}${date} ${time}${YELLOW}"
         code=1
       elif [[ ${mistake_date} -eq 1 ]]; then
         echo -e "${1}: incorrect date ${RED}${date} ${GREEN}${time}${YELLOW}"
