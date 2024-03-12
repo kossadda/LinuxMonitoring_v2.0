@@ -1,26 +1,31 @@
 #!/bin/bash
 
-generate_name() {
-  local addition_count=$((RANDOM % (35 - 4) + 4))
-  local name=${1}
+get_filename() {
+  local name=${FILE_CHARS}
   local random_index
 
-  for ((i = 0; i < ${addition_count}; i++)); do
+  for ((i = 0; i < 248 - ${#FILE_EXTENSION}; i++)); do
     random_index=$((RANDOM % ${#name}))
     name=${name:0:random_index}${name:random_index:1}${name:random_index:${#name}}
+    if [[ ${#name} -ge 4 ]] && [[ ! -e "${1}/${name}_${DATE}.${FILE_EXTENSION}" ]]; then
+      break
+    fi
   done
 
-  echo ${name}
-}
-
-get_filename() {
-  local filename=$(generate_name ${FILE_CHARS})
-
-  echo "${filename}_${DATE}.${FILE_EXTENSION}"
+  echo "${name}_${DATE}.${FILE_EXTENSION}"
 }
 
 get_foldername() {
-  local foldername=$(generate_name ${FOLDER_CHARS})
+  local name=${FOLDER_CHARS}
+  local random_index
 
-  echo "${foldername}_${DATE}"
+  for ((i = 0; i < 248; i++)); do
+    random_index=$((RANDOM % ${#name}))
+    name=${name:0:random_index}${name:random_index:1}${name:random_index:${#name}}
+    if ! [[ -d "${1}/${name}_${DATE}" ]]; then
+      break
+    fi
+  done
+
+  echo "${name}_${DATE}"
 }

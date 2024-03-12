@@ -3,6 +3,7 @@
 main() {
   readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   source ${SCRIPT_DIR}/configuration.conf
+  
   source ${SCRIPT_DIR}/validation.sh
   validation $@
   if [[ $? -eq 1 ]]; then

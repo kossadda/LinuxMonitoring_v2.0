@@ -20,13 +20,11 @@ create_depth() {
   local -r depth=$1
 
   for folder in $(find ${TRASH_PATH} -mindepth ${depth} -maxdepth ${depth} -type d); do
-    if ! [[ ${folder##*/} =~ ^[a-zA-Z]*_[0-9]{6}$ ]]; then
-      continue
-    elif [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
+    if [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
       break
+    elif [[ ${folder##*/} =~ ^[a-zA-Z]*_[0-9]{6}$ ]]; then
+      create_one_depth ${folder}
     fi
-
-    create_one_depth ${folder}
   done
 }
 
@@ -40,11 +38,13 @@ create_one_depth() {
     while [[ -d "${folder_in_depth_dir}/${folder_name}" ]]; do
       folder_name=$(get_foldername ${folder_in_depth_dir})
     done
+    
     if mkdir "${folder_in_depth_dir}/${folder_name}"; then
       ((FOLDERS++))
       report_folder_create
       create_files_in_folder "${folder_in_depth_dir}/${folder_name}"
     fi
+
     if [[ ${FOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
       generate_status
       break

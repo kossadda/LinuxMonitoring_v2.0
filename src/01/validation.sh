@@ -51,14 +51,14 @@ validation() {
         local extension_size=$(echo ${5} | awk -F. '{print $2}')
 
         if [[ ${#filechars} -eq 1 ]] && [[ ${4} -gt $((244 - ${#extension_size})) ]]; then
-          code=1
           echo -e "Invalid ${RED}${4}${YELLOW} number of files. The maximum number of combinations of ${RED}${5}${YELLOW} is $((244 - ${#extension_size}))"
+          code=1
         elif [[ ${#filechars} -eq 2 ]] && [[ ${4} -gt $((30375 - ${#extension_size} * 244)) ]]; then
-          code=1
           echo -e "Invalid ${RED}${4}${YELLOW} number of files. The maximum number of combinations of ${RED}${5}${YELLOW} is $((30375 - ${#extension_size} * 244))"
-        elif [[ ${#filechars} -eq 3 ]] && [[ ${4} -gt $((2500249 - ${#extension_size} * 30375)) ]]; then
           code=1
+        elif [[ ${#filechars} -eq 3 ]] && [[ ${4} -gt $((2500249 - ${#extension_size} * 30375)) ]]; then
           echo -e "Invalid ${RED}${4}${YELLOW} number of files. The maximum number of combinations of ${RED}${5}${YELLOW} is $((2500249 - ${#extension_size} * 30375))"
+          code=1
         fi
       fi
     fi

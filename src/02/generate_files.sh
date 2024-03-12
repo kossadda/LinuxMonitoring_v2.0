@@ -29,6 +29,7 @@ generate_files_and_folders() {
         create_depth ${depth}
         ((depth++))
       done
+
       FOLDERS=$((FOLDERS + SUBFOLDERS))
       SUBFOLDERS=0
     done
@@ -39,13 +40,11 @@ create_depth() {
   local -r depth=$1
 
   for folder in $(find ${TRASH_PATH} -mindepth ${depth} -maxdepth ${depth} -type d); do
-    if ! [[ ${folder##*/} =~ ^[a-zA-Z]*_[0-9]{6}$ ]]; then
-      continue
-    elif [[ ${SUBFOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
+    if [[ ${SUBFOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
       break
+    elif [[ ${folder##*/} =~ ^[a-zA-Z]*_[0-9]{6}$ ]]; then
+      create_one_depth ${folder}
     fi
-
-    create_one_depth ${folder}
   done
 }
 
@@ -55,14 +54,17 @@ create_one_depth() {
   local folder_name
 
   for ((i = 0; i < nest_num; i++)); do
-    folder_name=$(get_foldername)
+    folder_name=$(get_foldername ${folder_in_depth_dir})
     while [[ -d "${folder_in_depth_dir}/${folder_name}" ]]; do
-      folder_name=$(get_foldername)
+      folder_name=$(get_foldername ${folder_in_depth_dir})
     done
-    mkdir "${folder_in_depth_dir}/${folder_name}"
-    report_folder_create
-    ((SUBFOLDERS++))
-    create_files_in_folder "${folder_in_depth_dir}/${folder_name}"
+
+    if mkdir "${folder_in_depth_dir}/${folder_name}"; then
+      ((SUBFOLDERS++))
+      report_folder_create
+      create_files_in_folder "${folder_in_depth_dir}/${folder_name}"
+    fi
+
     if [[ ${SUBFOLDERS} -ge ${NEST} ]] || [[ ${OVERFLOW} -eq 1 ]]; then
       generate_status
       break
@@ -74,10 +76,10 @@ create_files_in_folder() {
   local folder_in_depth_dir=$1
   local files_count=$((RANDOM % (25 - 5) + 5))
 
-  for ((j = 0; j < files_count; j++, ++FILES)); do
-    file_name=$(get_filename)
+  for ((j = 0; j < files_count; j++)); do
+    file_name=$(get_filename ${folder_in_depth_dir})
     while [[ -e "${folder_in_depth_dir}/${file_name}" ]]; do
-      file_name=$(get_filename)
+      file_name=$(get_filename ${folder_in_depth_dir})
     done
 
     check_overflow_memory
@@ -85,9 +87,11 @@ create_files_in_folder() {
       break
     fi
     
-    fallocate -l ${FILE_SIZE^} ${folder_in_depth_dir}/${file_name} 2>/dev/null
-    report_file_create
-    generate_status
+    if fallocate -l ${FILE_SIZE^} ${folder_in_depth_dir}/${file_name} 2>/dev/null; then
+      ((FILES++))
+      report_file_create
+      generate_status
+    fi
   done
 }
 
