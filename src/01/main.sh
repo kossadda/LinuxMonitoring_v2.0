@@ -2,9 +2,9 @@
 
 main() {
   readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-  source ${SCRIPT_DIR}/configuration.conf
+  source ${SCRIPT_DIR}/modules/configuration.conf
 
-  source ${SCRIPT_DIR}/validation.sh
+  source ${SCRIPT_DIR}/modules/validation.sh
   validation $@
   if [[ $? -eq 1 ]]; then
     yellow "\nPlease try again. ${RED}Exiting from program...${RESET}\n"
@@ -20,10 +20,10 @@ main() {
   readonly INPUT_SIZE=${6}
   readonly FILE_SIZE=$((${6::-2} * 1024))
 
-  source ${SCRIPT_DIR}/dialog.sh
+  source ${SCRIPT_DIR}/modules/dialog.sh
   input_information ${5} ${6}
 
-  source ${SCRIPT_DIR}/generate_files.sh
+  source ${SCRIPT_DIR}/modules/generate_files.sh
   generate_files_and_folders
 
   output_result
