@@ -16,9 +16,11 @@ validation() {
       code=1
     else
       source ${SCRIPT_DIR}/user_input.conf
-      if [[ ${1} -eq 1 ]]; then
-        check_logfile
-      elif [[ ${1} -eq 2 ]]; then
+      
+      case ${1} in
+      1) 
+        check_logfile ;;
+      2)
         check_date_and_time "START_CREATE" ${START_CREATE}
         if [[ $? -eq 1 ]]; then
           code=1
@@ -29,10 +31,10 @@ validation() {
             echo "START_CREATE date is greater than END_CREATE"
             code=1
           fi
-        fi
-      elif [[ ${1} -eq 3 ]]; then 
-        check_mask
-      fi
+        fi ;;
+      3)
+        check_mask ;;
+      esac
 
       if [[ $? -eq 1 ]]; then
         code=1
@@ -110,16 +112,6 @@ check_mask() {
     fi
   else
     echo -e "FOLDER_MASK: enter parameter in ${RED}user_input.conf${YELLLOW}. ${GREEN}Example: folder_120324${YELLOW}"
-    code=1
-  fi
-
-  if [[ ! -z ${FILE_MASK} ]]; then
-    if [[ ! ${FILE_MASK} =~ ^[a-zA-Z]{1,7}_[0-9]{6}.[a-zA-Z]{1,3}$ ]]; then
-      echo -e "FILE_MASK: incorrect format of file mask.     ${GREEN}Example: file_120324.txt${YELLOW}"
-      code=1
-    fi
-  else
-    echo -e "FILE_MASK: enter parameter in ${RED}user_input.conf${YELLLOW}.   ${GREEN}Example: file_120324.txt${YELLOW}"
     code=1
   fi
 
