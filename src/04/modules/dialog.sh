@@ -16,7 +16,7 @@ output_result() {
 
   echo -e "\n\nScript started at ${REPORT_START_TIME}"
   echo "Script finised at ${REPORT_END_TIME}"
-  bold "\n${RESET}Generated ${YELLOW}5${RESET} ${BOLD}log files for ${YELLOW}${EXECUTE_TIME}${RESET} ${BOLD}seconds\n"
+  bold "\n${BOLD}Generated ${YELLOW}5${RESET} ${BOLD}log files for ${YELLOW}${EXECUTE_TIME}${RESET} ${BOLD}seconds\n"
 
   echo -e "${BOLD}All logs you can find in ${YELLOW}${SCRIPT_DIR}/logs${RESET}"
 

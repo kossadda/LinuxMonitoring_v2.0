@@ -36,7 +36,7 @@ output_result() {
 
   echo "Script started at ${REPORT_START_TIME}"
   echo "Script finised at ${REPORT_END_TIME}"
-  bold "\nGenerated ${YELLOW}${FOLDERS}${RESET} ${BOLD}folders and ${YELLOW}${FILES}${RESET} ${BOLD}files for ${YELLOW}${EXECUTE_TIME}${RESET} ${BOLD}seconds\n"
+  bold "\n${BOLD}Generated ${YELLOW}${FOLDERS}${RESET} ${BOLD}folders and ${YELLOW}${FILES}${RESET} ${BOLD}files for ${YELLOW}${EXECUTE_TIME}${RESET} ${BOLD}seconds\n"
 
   report_results
 

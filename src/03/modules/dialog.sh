@@ -36,7 +36,7 @@ output_result() {
 
   echo -e "\n\nScript started at ${REPORT_START_TIME}"
   echo "Script finised at ${REPORT_END_TIME}"
-  bold "\n${RESET}Deleted ${YELLOW}${FOLDERS}${RESET} ${BOLD}folders for ${YELLOW}${EXECUTE_TIME}${RESET} ${BOLD}seconds\n"
+  bold "\n${BOLD}Deleted ${YELLOW}${FOLDERS}${RESET} ${BOLD}folders for ${YELLOW}${EXECUTE_TIME}${RESET} ${BOLD}seconds\n"
 
   report_results
 
