@@ -14,6 +14,9 @@ generate_logs() {
       echo "$(ips) - - [$(date -d "${iterate_date} $(times)")] \"$(methods) $(urls)\" $(errors) \"-\" \"$(agents)\"" >> ${current_log}
     done
     generate_status ${day}
+
+    (awk -F'[][]' '{print $1 "[" $2 "]" $3}' ${current_log} | sort -k4,4 -k2M -k3,3n -k4,4 -k5) > ${SCRIPT_DIR}/logs/tmp.log
+    mv ${SCRIPT_DIR}/logs/tmp.log ${current_log}
   done
 }
 
