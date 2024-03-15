@@ -4,34 +4,26 @@
 
 ## Установка Grafana
 
-- Импортировать ключ GPG репозитория Grafana, выполнив следующую команду:
+- Устанавить пакеты adduser, libfontconfig1 и musl в системе: <br>
+`sudo apt-get install -y adduser libfontconfig1 musl`
 
-`sudo vim /etc/yum.repos.d/grafana.repo` <br>
+- Загрузить инструмент grafana с официального сайта: <br>
+`wget https://dl.grafana.com/enterprise/release/grafana-enterprise_10.4.0_amd64.deb`
 
->[grafana]
-name=grafana <br>
-baseurl=https://rpm.grafana.com <br>
-repo_gpgcheck=1 <br>
-enabled=1 <br>
-gpgcheck=1 <br>
-gpgkey=https://rpm.grafana.com/gpg.key <br>
-sslverify=1 <br>
-sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+- Установить загруженный пакет: <br>
+`sudo dpkg -i grafana-enterprise_10.4.0_amd64.deb`
 
-- После добавления репозитория можно установить Grafana:
+- Перезагрузить systemd и запустить службу Grafana:
 
-`sudo dnf update` <br>
-`sudo dnf install grafana` <br>
+`sudo systemctl daemon-reload` <br>
+`systemctl start grafana-server.service` <br>
+`systemctl status grafana-server.service` <br>
 
-- После установки Grafana необходимо запустить службу Grafana для доступа к веб-интерфейсу:
+<img src="/home/kossadda/develop/monitoring/misc/images/part_7/1.jpg" alt="1" />
 
-`sudo systemctl enable grafana-server` <br>
-`sudo systemctl start grafana-server` <br>
+- Проверить работу порта:
 
-- Открыть порт в брандмауэре, чтобы получить доступ к Grafana с другого устройства:
-
-`sudo firewall-cmd --add-port=3000/tcp --permanent` <br>
-`sudo firewall-cmd --reload` <br>
+<img src="/home/kossadda/develop/monitoring/misc/images/part_7/2.jpg" alt="2" />
 
 ## Установка Prometheus
 
@@ -82,35 +74,49 @@ WantedBy=multi-user.target
 `systemctl start prometheus` <br>
 `systemctl status prometheus` <br>
 
+<img src="/home/kossadda/develop/monitoring/misc/images/part_7/3.jpg" alt="3" />
+
+- Проверить работу порта:
+
+<img src="/home/kossadda/develop/monitoring/misc/images/part_7/4.jpg" alt="4" />
+
 ## Создание собственного dashboard'а
 
-- Перейти на страницу Grafana http://localhost:3000:
-
-<img src="../../misc/images/part_7/1.jpg" alt="1" />
-
-- Перейти в раздел *Data sources* и нажать *Add data source*:
-
-<img src="../../misc/images/part_7/2.jpg" alt="2" />
-
-- В предложенном списке выбрать *Prometheus*:
-
-<img src="../../misc/images/part_7/3.jpg" alt="3" />
-
-- В настройка *URL* указать адрес *Prometheus'а* (http://localhost:9090):
-
-<img src="../../misc/images/part_7/4.jpg" alt="4" />
-
-- Сохранить изменения:
+- Перейти на страницу Grafana http://localhost:3000 (логин и пароль - admin):
 
 <img src="../../misc/images/part_7/5.jpg" alt="5" />
 
-- Перейти в *Dashboard* и нажать *Add a new panel*:
+- Перейти в раздел *Data sources* и нажать *Add data source*. В предложенном списке выбрать *Prometheus* и в настройках *URL* указать адрес *Prometheus'а* (http://localhost:9090):
 
 <img src="../../misc/images/part_7/6.jpg" alt="6" />
 
-- Добавить на dashboard Grafana отображение ЦПУ, доступной оперативной памяти, свободное место и кол-во операций ввода/вывода на жестком диске:
+- Сохранить изменения:
 
 <img src="../../misc/images/part_7/7.jpg" alt="7" />
+
+- Перейти в *Dashboards* и нажать *Create Dashboard*:
+
+<img src="../../misc/images/part_7/8.jpg" alt="8" />
+
+- Добавить на dashboard Grafana отображение CPU:
+
+<img src="../../misc/images/part_7/9.jpg" alt="9" />
+
+- Доступной оперативной памяти:
+
+<img src="../../misc/images/part_7/10.jpg" alt="10" />
+
+- Доступного свободного места:
+
+<img src="../../misc/images/part_7/11.jpg" alt="11" />
+
+- Количества операций ввода/вывода:
+
+<img src="../../misc/images/part_7/12.jpg" alt="12" />
+
+- Итоговый вид dashboard'а:
+
+<img src="../../misc/images/part_7/13.jpg" alt="13" />
 
 ## Тестирование dashboard'а
 
@@ -118,17 +124,17 @@ WantedBy=multi-user.target
 
 - Создание мусора:
 
-<img src="../../misc/images/part_7/8.jpg" alt="8" />
+<img src="../../misc/images/part_7/14.jpg" alt="14" />
 
 - Очистка мусора:
 
-<img src="../../misc/images/part_7/9.jpg" alt="9" />
+<img src="../../misc/images/part_7/15.jpg" alt="15" />
 
 - Установить утилиту stress:
 
-`sudo dnf install stress` <br>
+`sudo apt install stress` <br>
 
 - Запустить команду stress и посмотреть на нагрузку жесткого диска, оперативной памяти и ЦПУ:
 
 `stress -c 2 -i 1 -m 1 --vm-bytes 32M -t 60s` <br>
-<img src="../../misc/images/part_7/10.jpg" alt="10" />
+<img src="../../misc/images/part_7/16.jpg" alt="16" />
