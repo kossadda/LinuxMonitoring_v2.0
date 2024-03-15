@@ -1,8 +1,8 @@
 #!/bin/bash
 
 generate_logs() {
-  rm -rf logs
-  mkdir -p logs
+  rm -rf ${SCRIPT_DIR}/logs
+  mkdir -p ${SCRIPT_DIR}/logs
 
   for day in {1..5}; do
     local current_log="${SCRIPT_DIR}/logs/access_${day}.log"
@@ -11,7 +11,7 @@ generate_logs() {
     
     generate_status $((day - 1))
     for ((i = 0; i < ${records}; i++)); do
-      echo "$(ips) - - [$(date -d "${iterate_date} $(times)")] \"$(methods) $(urls)\" $(errors) \"-\" \"$(agents)\"" >> ${current_log}
+      echo "$(ips) - - [${iterate_date}:$(times)] \"$(methods) $(urls)\" $(errors) $((RANDOM % 1000)) \"$(hosts)\" \"$(agents)\"" >> ${current_log}
     done
     generate_status ${day}
 
@@ -61,33 +61,34 @@ methods() {
 }
 
 dates() {
-  local -r start=$(date -d "1 year ago" +"%Y-%m-%d")
-  local -r end=$(date +"%Y-%m-%d")
+  local -r date=$(LC_TIME=en_US.UTF-8 date -d "1 year ago + $((RANDOM % 365)) days" "+%d/%b/%Y")
 
-  local -r timestamp=$(shuf -i $(date -d "${start}" +"%s")-$(date -d "${end}" +"%s") -n 1)
-
-  echo $(date -d @${timestamp} +"%Y-%m-%d")
+  echo ${date}
 }
 
 times() {
-  local -r hour=$(shuf -i 0-23 -n 1)
-  local -r minute=$(shuf -i 0-59 -n 1)
-  local -r second=$(shuf -i 0-59 -n 1)
+  local -r time=$(date -d "$((RANDOM % 24)) hours $((RANDOM % 60)) minutes $((RANDOM % 60)) seconds" "+%H:%M:%S %Z")
 
-  echo $(printf "%02d:%02d:%02d" ${hour} ${minute} ${second})
+  echo ${time}
+}
+
+hosts() {
+  local -r hosts=("ex.com" "test.org" "website.net" "google.com" "ya.ru" "hosts.com" "memes.ru")
+  local -r protocols=("http" "https")
+
+  local -r protocol=${protocols[$((RANDOM % ${#protocols[@]}))]}
+  local -r host=${hosts[$((RANDOM % ${#hosts[@]}))]}
+
+  echo "${protocol}://${host}"
 }
 
 urls() {
   local -r paths=("/page1" "/page2" "/section/page3" "/groups" "/pages/section" "/lists" "/main")
-  local -r hosts=("ex.com" "test.org" "website.net" "google.com" "ya.ru" "hosts.com" "memes.ru")
-  local -r protocols=("http" "https")
 
   local -r query_param="param${RANDOM}=value${RANDOM}&param${RANDOM}=value${RANDOM}"
-  local -r protocol=${protocols[$((RANDOM % ${#protocols[@]}))]}
-  local -r host=${hosts[$((RANDOM % ${#hosts[@]}))]}
   local -r path=${paths[$((RANDOM % ${#paths[@]}))]}
 
-  echo "${protocol}://${host}${path}?${query_param}"
+  echo "${path}?${query_param}"
 }
 
 agents() {

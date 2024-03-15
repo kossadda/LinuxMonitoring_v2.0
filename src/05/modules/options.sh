@@ -5,8 +5,8 @@ sort_and_filters() {
   local logs=$(ls ${log_path}/*.log)
   local count=0
 
-  rm -rf sort_logs
-  mkdir -p sort_logs
+  rm -rf ${SCRIPT_DIR}/sort_logs
+  mkdir -p ${SCRIPT_DIR}/sort_logs
 
   for log in ${logs}; do
     local sort_log_name="${SCRIPT_DIR}/sort_logs/$(basename ${log})"
@@ -15,10 +15,10 @@ sort_and_filters() {
 
     {
       case ${1} in
-        1) awk '{print $0}' ${log} | sort -k12,12n ;;
+        1) awk '{print $0}' ${log} | sort -k8,8n ;;
         2) awk '{print $1}' ${log} ;;
-        3) awk '$12 ~ /^4|^5/' ${log} ;;
-        4) awk '$12 ~ /^4|^5/' ${log} | awk '{print $1}' | sort -u ;;
+        3) awk '$8 ~ /^4|^5/' ${log} ;;
+        4) awk '$8 ~ /^4|^5/' ${log} | awk '{print $1}' | sort -u ;;
       esac
     } >> ${sort_log_name}
     
