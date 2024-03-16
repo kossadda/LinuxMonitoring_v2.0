@@ -1,36 +1,30 @@
 #!/bin/bash
 
-path=:"$(pwd)"
+sys_info() {
+  local -r CPU=$(top -bn 1 | grep "^%Cpu(s)" | awk '{printf "%d", $2 + $4}')
+  local -r Space_Total=$(df | grep /$ | awk '{print $2}')
+  local -r Space_Used=$(df | grep /$ | awk '{print $3}')
+  local -r Space_Free=$(df | grep /$ | awk '{print $4}')
+  local -r RAM_Total=$(free | grep ^Mem | awk '{print $2}')
+  local -r RAM_Used=$(free | grep ^Mem | awk '{print $3}')
+  local -r RAM_Free=$(free | grep ^Mem | awk '{print $4}')
 
-if [ $# != 0 ] ; then
-    echo "No arguments required"
-    exit 1
-fi
-
-system_information() {
-    CPU=$(mpstat 1 2 | awk 'NR==4 {print 100 - $12}')
-    Space_Total=$(df / | awk 'NR==2 {print $2}')
-    Space_Used=$(df / | awk 'NR==2 {print $3}')
-    Space_Free=$(df / | awk 'NR==2 {print $4}')
-    RAM_Total=$(free | awk '/Mem/ {print $2}')
-    RAM_Free=$(free | awk '/Mem/ {print $4}')
-    Total_IOs=$(vmstat 1 2 | awk 'NR==3 {print $10 + $11}')
-
-    echo "CPU $CPU" | sudo tee index.html > /dev/null
-    echo "Space_Total $Space_Total" | sudo tee -a index.html > /dev/null
-    echo "Space_Used $Space_Used" | sudo tee -a index.html > /dev/null
-    echo "Space_Free $Space_Free" | sudo tee -a index.html > /dev/null
-    echo "RAM_Total $RAM_Total" | sudo tee -a index.html > /dev/null
-    echo "RAM_Free $RAM_Free" | sudo tee -a index.html > /dev/null
-    echo "Total_IOs $Total_IOs" | sudo tee -a index.html > /dev/null
+  echo "CPU ${CPU}"
+  echo "Space_Total ${Space_Total}"
+  echo "Space_Used ${Space_Used}"
+  echo "Space_Free ${Space_Free}"
+  echo "RAM_Total ${RAM_Total}"
+  echo "RAM_Used ${RAM_Used}"
+  echo "RAM_Free ${RAM_Free}"
 }
 
-main_node_exporter() {
-    sudo touch index.html
-    while true; do
-        system_information
-        sleep 3
-    done;
+main() {
+  touch index.html
+  
+  while true; do
+    sys_info > ./index.html
+    sleep 3
+  done;
 }
 
-main_node_exporter
+main
