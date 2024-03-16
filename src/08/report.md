@@ -69,7 +69,7 @@ WantedBy=multi-user.target <br>
 
 <img src="./../../misc/images/part_8/9.jpg" alt="9" />
 
-## Проведение тестов из Части 7**
+## Проведение тестов из Части 7
 
 - Создание мусора:
 
