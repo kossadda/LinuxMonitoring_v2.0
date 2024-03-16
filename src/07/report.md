@@ -80,7 +80,7 @@ WantedBy=multi-user.target
 
 <img src="./../../misc/images/part_7/4.jpg" alt="4" />
 
-## Создание собственного dashboard'а
+## Создание собственного дашборда
 
 - Перейти на страницу Grafana http://localhost:3000 (логин и пароль - admin):
 
@@ -114,11 +114,11 @@ WantedBy=multi-user.target
 
 <img src="./../../misc/images/part_7/12.jpg" alt="12" />
 
-- Итоговый вид dashboard'а:
+- Итоговый вид дашборда:
 
 <img src="./../../misc/images/part_7/13.jpg" alt="13" />
 
-## Тестирование dashboard'а
+## Тестирование дашборда
 
 **Запустить bash-скрипт из Части 2 и посмотреть на нагрузку жесткого диска (место на диске и операции чтения/записи)**
 
