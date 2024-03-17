@@ -5,9 +5,9 @@ main() {
   source ${SCRIPT_DIR}/modules/configuration.conf
 
   source ${SCRIPT_DIR}/modules/validation.sh
-  validation $@
+  validation $@ 1>&2
   if [[ $? -eq 1 ]]; then
-    yellow "\nPlease try again. ${RED}Exiting from program...${RESET}\n"
+    yellow "\nPlease try again. ${RED}Exiting from program...${RESET}\n" 1>&2
     exit 1
   fi
 

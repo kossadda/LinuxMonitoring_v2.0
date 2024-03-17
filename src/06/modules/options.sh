@@ -10,10 +10,10 @@ sort_and_filters() {
   mkdir -p ${SCRIPT_DIR}/reports
 
   case ${1} in
-    1) flags="--sort-panel=HTTPStatus" ;;
-    2) flags="--unique-visitors" ;;
-    3) flags="--http-status-codes=4xx,5xx" ;;
-    4) flags="--http-status-codes=4xx,5xx --unique-visitors" ;;
+    1) flags="--sort-panel=STATUS_CODES,BY_DATA,ASC" ;;
+    2) flags="--sort-panel=HOSTS,BY_DATA,ASC" ;;
+    3) flags="--ignore-status=200 --ignore-status=201" ;;
+    4) flags="--ignore-status=200 --ignore-status=201 --sort-panel=HOSTS,BY_DATA,ASC" ;;
   esac
 
   for log in ${logs}; do
@@ -21,7 +21,7 @@ sort_and_filters() {
 
     generate_status ${count}
 
-    goaccess -f ${log} --log-format=COMBINED ${FLAGS} -o ${html_name} > /dev/null 2>&1
+    goaccess -f ${log} --log-format=COMBINED ${flags} -o ${html_name} > /dev/null 2>&1
     
     ((count++))
     generate_status ${count}

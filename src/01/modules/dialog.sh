@@ -29,7 +29,7 @@ output_result() {
   readonly REPORT_END_TIME=$(date '+%Y-%m-%d %H:%M')
 
   if [[ ${OVERFLOW} -eq 1 ]]; then
-    red "\nWARNING: Not enough free disk space\n"
+    red "\nWARNING: Not enough free disk space\n" 1>&2
   else
     green "\nTrash generate succefully\n"
   fi

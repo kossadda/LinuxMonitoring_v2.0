@@ -16,9 +16,9 @@ sort_and_filters() {
     {
       case ${1} in
         1) awk '{print $0}' ${log} | sort -k8,8n ;;
-        2) awk '{print $1}' ${log} ;;
-        3) awk '$8 ~ /^4|^5/' ${log} ;;
-        4) awk '$8 ~ /^4|^5/' ${log} | awk '{print $1}' | sort -u ;;
+        2) awk '{print $1}' ${log} | sort -u | sort -k1,1n ;;
+        3) awk '$8 ~ /^4|^5/' ${log} | sort -k8,8n ;;
+        4) awk '$8 ~ /^4|^5/' ${log} | awk '{print $1}' | sort -u | sort -k1,1n ;;
       esac
     } >> ${sort_log_name}
     

@@ -27,7 +27,7 @@ validation() {
       fi
     fi
     
-    if ! [[ ${2} =~ ^[0-9]+$ ]]; then
+    if ! [[ ${2} =~ ^[0-9]+$ ]] || [[ ${2} -eq 0 ]]; then
       echo -e "Invalid ${RED}${2}${YELLOW} number of subfolders. Need integer. ${GREEN}Example: 4${YELLOW}"
       code=1
     fi
@@ -37,7 +37,7 @@ validation() {
       code=1
     fi
 
-    if ! [[ ${4} =~ ^[0-9]+$ ]]; then
+    if ! [[ ${4} =~ ^[0-9]+$ ]] || [[ ${4} -eq 0 ]]; then
       echo -e "Invalid ${RED}${4}${YELLOW} number of files in each folder. Need integer. ${GREEN}Example: 5${YELLOW}"
       code=1
     fi
